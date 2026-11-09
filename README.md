@@ -1,137 +1,91 @@
-# CV Next iOS — branch di sviluppo
-
-Questo branch contiene il porting nativo SwiftUI per iPhone e iPad. Il progetto è nella cartella [`ios/`](ios/README.md).
-
-- Compilazione macOS: workflow **Build iOS IPA**, eseguita anche sui push a questo branch.
-- Download build: aprire la relativa esecuzione in GitHub Actions e scaricare l’artifact **CV-Next-iOS-unsigned**; lo ZIP contiene l’IPA.
-- L’IPA richiede firma tramite AltStore/Sideloadly. Non è firmato da Apple.
-- Liquid Glass su iOS 26, materiali traslucidi sulle versioni precedenti; iOS 17 minimo.
-- Prima anteprima: login, scelta studente, Home, Voti, lista Bacheca, demo e temi chiaro/scuro.
-- [Istruzioni iOS e limiti attuali](ios/README.md).
-
-Il materiale Android recuperato è conservato nella storia e nelle cartelle esistenti. La versione Android stabile resta sul branch `main`.
-
----
+<div align="center">
 
 # CV Next
 
-App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack Compose.
+**Il registro scolastico, a colpo d’occhio.**
 
-[**Scarica l’ultimo APK**](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Release](https://github.com/yzypablo67/CV-Next/releases) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
+Client non ufficiale per ClasseViva · Android e iOS
 
-Android 8.0 o successivo (API 26). Versione recuperata: **1.6.14**.
+[Scarica Android](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Anteprima iOS](https://github.com/yzypablo67/CV-Next/releases/tag/ios-v0.1.0) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
-## Stato del recupero
+</div>
 
-Progetto ricostruito dall’APK 1.6.11 fornito dall’autore dopo la perdita di accesso alla repository originale `mattcoc/cv-next`. Il codice compilabile è in **Smali**, con risorse Android decodificate: non è il progetto Kotlin/Gradle originale. Il codice è offuscato e include dipendenze incorporate nell’APK.
+## Scegli la versione
 
-L’elenco seguente riporta le funzioni descritte nel README originale indicizzato e presenti come funzionalità del progetto recuperato. Non sono state tutte provate su dispositivo o con un account ClasseViva. La compilazione non garantisce che i servizi remoti siano ancora compatibili.
+| | Android | iPhone e iPad |
+|---|---|---|
+| Versione | **1.6.14**, progetto recuperato | **0.1.0**, anteprima nativa |
+| Requisiti | Android 8.0+ | iOS / iPadOS 17+ |
+| Interfaccia | Material You, colori dinamici | SwiftUI, Liquid Glass su iOS 26 |
+| Installazione | APK firmato | IPA da firmare con AltStore/Sideloadly |
+| Codice | [Branch main](https://github.com/yzypablo67/CV-Next/tree/main) | [Branch ios](https://github.com/yzypablo67/CV-Next/tree/ios) |
+| Guida | [Funzioni e build Android](docs/ANDROID.md) | [Guida iOS](ios/README.md) |
 
-## Funzioni
+> La versione iOS è all’inizio del porting: non comprende ancora tutte le funzioni Android. Un IPA non firmato non si installa direttamente da Safari o File.
 
-### Oggi
+## Android
 
-- Saluto, data, classe e nome della scuola.
-- Avvisi per assenze, ritardi e uscite da giustificare.
-- Avvisi dei pagamenti PagOnline, con importo e scadenza.
-- Vista giornaliera scorrevole sulle due settimane precedenti e successive: assenze, voti, compiti, eventi e lezioni con ora, durata, docente e argomento.
-- Verifiche e interrogazioni in arrivo nelle due settimane successive, con conto alla rovescia e riconoscimento del proprio nome; riconoscimento degli eventi dal testo.
-- Promemoria personali salvati sul telefono.
-- Ultimi dieci voti e prossimi quattro eventi in agenda.
+Voti e medie, giornata scolastica, compiti, circolari, documenti e notifiche in un’interfaccia adattata a telefono e tablet.
 
-### Voti
+<p align="center">
+  <img src="docs/screenshots/android-functions-tablet.jpg" alt="Schermata reale Funzioni di CV Next Android su tablet, in tema scuro" width="900">
+</p>
+<p align="center"><sub>Screenshot reale fornito dall’autore: schermata Funzioni, tablet, tema scuro. Riferimento visivo dell’app; può precedere gli ultimi ritocchi.</sub></p>
 
-- Media generale aritmetica di tutti i voti numerici validi del periodo selezionato, con indicatore di sufficienza. Ogni voto pesa allo stesso modo: non si fa la media delle medie per materia.
-- Periodi scolastici e intero anno, con selezione iniziale del periodo corrente.
-- Elenco per materia o per data, con media e numero di voti.
-- Distinzione tra voti scritti, orali e pratici.
-- Dettaglio materia con medie, commenti e cronologia.
-- Voti esclusi dalla media e annullati mostrati separatamente.
-- Grafico dei voti e andamento della media.
-- Calcolo del voto necessario per raggiungere una media scelta nel periodo corrente.
+<details>
+<summary>Altra schermata Android: Bacheca</summary>
 
-### Agenda
+<img src="docs/screenshots/android-notices-tablet.jpg" alt="Schermata reale Bacheca Android su tablet, con ricerca, categorie e allegati PDF" width="900">
 
-- Compiti ed eventi dei prossimi 30 giorni e giorni successivi.
-- Consultazione dei 30 giorni precedenti.
-- Filtro compiti, raggruppamento per giorno e consultazione di quelli passati.
+</details>
 
-### Bacheca e PDF
+### Cosa trovi nell’app
 
-- Circolari e comunicazioni, evidenza delle non lette e filtro per categoria.
-- Lettore PDF integrato, anteprima delle pagine, schermo intero, zoom e passaggio tra allegati.
-- Download e condivisione degli allegati PDF.
-- Comunicazioni segnate come lette all’apertura.
+| Area | Funzioni |
+|---|---|
+| **Home e giornata** | Prossime verifiche, lezioni, compiti, promemoria, ultimi voti e avvisi |
+| **Voti** | Periodi scolastici, media generale e per materia, grafici e calcolo del voto necessario |
+| **Bacheca** | Ricerca e filtri, comunicazioni non lette, lettura e condivisione dei PDF |
+| **Registro** | Assenze, note, scrutini, lezioni e materiale dei docenti |
+| **Account e aspetto** | Più account, temi chiaro/scuro, colori dinamici e palette selezionabili |
+| **Notifiche** | Novità del registro e promemoria serale configurabile |
 
-### Altre funzioni del registro
+L’elenco completo, i limiti del recupero e le istruzioni tecniche sono nella [guida Android](docs/ANDROID.md).
 
-- Scrutini, esiti, pagelle e documenti della scuola.
-- Assenze, ritardi, assenze parziali e uscite anticipate, con riepilogo, elenco mensile, motivi e stato della giustificazione.
-- Note disciplinari, richiami, annotazioni e sanzioni.
-- Lezioni degli ultimi 30 giorni, con argomenti svolti.
-- Materiale dei docenti organizzato per docente e cartella: file, PDF, collegamenti e testi.
-- Scorciatoie per valutazioni, bacheca, agenda e compiti.
-- Servizi web con accesso automatico: colloqui, sportello, PagOnline, Progettiamo la Scuola, certificazioni, registro web e anno precedente.
-- Aggiornamento manuale trascinando le schermate verso il basso.
+### Installare o aggiornare
 
-### Notifiche e promemoria
+1. [Scarica `CV-Next.apk`](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk).
+2. Aprilo e consenti l’installazione da quella sorgente, se Android lo richiede.
+3. Dalla versione **1.6.12 di questa repository**, gli aggiornamenti usano la stessa firma: puoi installarli sopra la versione precedente.
 
-- Controllo periodico per tutti gli account salvati, circa una volta all’ora con connessione disponibile.
-- Avvisi configurabili per comunicazioni, voti, compiti ed eventi, materiale dei docenti, note e pagamenti.
-- Primo controllo usato come riferimento, con notifiche per le novità successive.
-- Apertura della sezione pertinente toccando una notifica e comando di controllo immediato.
-- Riconoscimento locale del cognome o dei nomi scelti negli eventi in agenda.
-- Promemoria serale configurabile tra le 18 e le 21 con compiti, verifiche e promemoria per il giorno scolastico successivo.
-- Provider del widget compiti recuperato dall’APK.
+L’app originale e la prima ricostruzione con firma debug usano chiavi differenti. Non possono essere aggiornate direttamente con questi APK; un’eventuale disinstallazione cancella i dati locali.
 
-### Account e personalizzazione
+## iOS
 
-- Più account, con passaggio dal menu del profilo.
-- Scelta dello studente quando le credenziali sono associate a più studenti.
-- Tema chiaro, scuro o di sistema.
-- Colori dinamici Material You su Android 12+ o scelta tra nove colori.
-- Credenziali conservate localmente con Android Keystore e dati offline nella memoria privata dell’app, secondo il testo informativo recuperato.
+Il porting usa SwiftUI e i materiali nativi di Apple: **Liquid Glass su iOS 26**, superfici traslucide sulle versioni precedenti e supporto a Riduci trasparenza.
 
-### Aggiornamenti
+Disponibili nella prima anteprima: login, scelta dello studente, Home, Voti per periodo, medie, dettaglio materia, lista Bacheca con ricerca e modalità demo. Agenda, PDF, notifiche e altre funzioni sono ancora in sviluppo.
 
-La sezione aggiornamenti interroga `https://api.github.com/repos/yzypablo67/CV-Next/releases/latest`, legge il tag, le note e l’asset `.apk`, quindi usa il relativo `browser_download_url`. Le nuove release devono avere un tag `vX.Y.Z` coerente con la versione dell’app e includere `CV-Next.apk`.
+**[Apri la guida iOS e le istruzioni di firma →](ios/README.md)**
 
-## Installazione e firma
+## Compilazioni e download
 
-Scaricare l’APK dalla release e autorizzarne l’installazione su Android. La versione recuperata ha una **nuova firma dedicata**: non può aggiornare direttamente l’app originale o l’APK precedente con firma debug. La disinstallazione può cancellare i dati locali: salvare prima ciò che serve. Le release di questa repository usano la stessa nuova chiave.
+- **Android:** [workflow Build Android APK](https://github.com/yzypablo67/CV-Next/actions/workflows/release.yml). I tag `v*` pubblicano l’APK nelle release.
+- **iOS:** [workflow Build iOS IPA](https://github.com/yzypablo67/CV-Next/actions/workflows/ios.yml). Ogni build riuscita offre l’artifact `CV-Next-iOS-unsigned`; i tag `ios-v*` pubblicano prerelease separate.
+- Gli artifact GitHub sono ZIP: estraili per trovare APK o IPA. Per scaricarli può essere necessario accedere a GitHub.
 
-## Compilare
+## Stato del progetto
 
-Servono Java 21, Python 3, curl e sha256sum su Linux. Eseguire:
+La versione Android è stata recuperata da un APK dopo la perdita di accesso alla repository originale. Il codice compilabile recuperato è **Smali**, non il progetto Kotlin/Gradle originale. iOS è invece un progetto **SwiftUI nativo** scritto per il porting.
 
-```sh
-bash scripts/build.sh
-```
+Build e test automatici sono disponibili su GitHub Actions. Questo non sostituisce una verifica delle funzioni su dispositivo o con un account ClasseViva reale.
 
-Lo script scarica Apktool 2.12.1 e uber-apk-signer 1.3.0 con verifica SHA-256 e produce `dist/cv-next-unsigned.apk`. Per un APK firmato, impostare `SIGNING_KEYSTORE` con il percorso di un keystore PKCS12, alias `cvnext`, e `SIGNING_PASSWORD` con la password della chiave e del keystore; il risultato è `dist/CV-Next.apk`.
+## Segnalazioni
 
-La workflow GitHub Actions compila a ogni push su `main`. I tag `v*` compilano e pubblicano la release con APK. Prima di un nuovo tag incrementare `versionCode` e `versionName` in `app/apktool.yml` e aggiornare `RELEASE_NOTES.md`.
+[Apri una issue](https://github.com/yzypablo67/CV-Next/issues) indicando versione dell’app, sistema operativo, passaggi per riprodurre il problema e comportamento atteso. Oscura nomi, voti e altri dati personali negli screenshot. Non allegare password, token o chiavi di firma.
 
-La firma automatica richiede i segreti repository `ANDROID_KEYSTORE_BASE64` e `ANDROID_SIGNING_PASSWORD`. Senza questi segreti la workflow compila un APK non firmato e, solo quando versione e checksum coincidono, usa l’APK già firmato conservato in `release/` per pubblicare la versione recuperata. Per versioni future aggiornare l’APK prefirmato e i suoi metadati oppure configurare i segreti di firma. Il collegamento usato per il recupero non ha il permesso di configurare questi segreti: la prima release è firmata localmente. Non pubblicare mai chiave o password nel codice; conservarne un backup per i futuri aggiornamenti.
+## Crediti
 
-## Verifica e limiti
+Progetto originale `mattcoc/cv-next`, recupero e sviluppo su `yzypablo67/CV-Next`.
 
-Assemblaggio DEX, compilazione risorse, allineamento ZIP e verifica della firma APK. Non testato su dispositivo Android. Non sono recuperati i sorgenti Kotlin originali, la cronologia Git, i commenti e la configurazione Gradle. La disponibilità delle funzioni di ClasseViva dipende dai servizi esterni e dalle credenziali dell’utente.
-
-## Avvertenza e dipendenze
-
-Progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spaggiari Parma S.p.A. ClasseViva è un marchio dei rispettivi proprietari. I dati e i servizi appartengono ai rispettivi titolari. Il progetto recuperato incorpora librerie di terze parti: i relativi metadati e avvisi presenti nell’APK sono conservati sotto `app/unknown/`.
-
-## Test della media
-
-`bash scripts/test-average.sh` estrae i metodi Smali reali `fy.G`, `fy.k` e `bo.g0`, li assembla in DEX e li esegue sulla JVM tramite dex2jar (con ricostruzione degli stack map frames tramite ASM). Il test verifica il caso 6, 6 e 9 in materie diverse (7,00), voti esclusi e nulli, decimali, liste vuote e singolo voto. Gli unici stub sono il contenitore del voto e il gestore di overflow del conteggio. La correzione riguarda la media generale; la selezione del periodo e le medie delle singole materie continuano a usare il codice recuperato.
-
-## UI 1.6.14
-
-Stile originale conservato. Scheda media con superficie e testo del tema attivo (chiaro, scuro e colori dinamici), stato testuale sufficiente/insufficiente e anello originale. Conteggi distinti dei voti numerici validi ed esclusi, con numero di materie con voti validi. Metadati delle comunicazioni non lette con etichetta esplicita. Spaziatura interna del riepilogo voti portata da 20 a 24 dp.
-
-Il codice leggibile dei nuovi helper è `app/ui/UiPolish.java`; gli stub in `tests/fixtures/UiStubs.java` servono solo a ricostruirne lo Smali e non entrano nell’APK. Rigenerazione: `DEX2JAR_HOME=... python3 scripts/generate-ui.py`.
-
-## Versione iOS in sviluppo
-
-Il porting nativo SwiftUI è in [`ios/`](ios/README.md), con progetto XcodeGen, test del core e workflow macOS per produrre un IPA non firmato da installare tramite AltStore/Sideloadly. Le prerelease iOS sono separate dagli aggiornamenti Android.
+CV Next è un progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spaggiari Parma S.p.A. ClasseViva e gli altri marchi appartengono ai rispettivi titolari. Le dipendenze conservano le rispettive licenze; non viene attribuita una nuova licenza al codice recuperato.
