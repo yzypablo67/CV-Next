@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode and generate project
         run: |
-          XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1)
+          if [ -d /Applications/Xcode_16.4.app ]; then XCODE=/Applications/Xcode_16.4.app; else XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1); fi
           sudo xcode-select -s "$XCODE/Contents/Developer"
           xcodebuild -version
           command -v xcodegen || brew install xcodegen
@@ -21,10 +21,13 @@ jobs:
       - name: Build simulator app
         run: xcodebuild -project ios/CVNext.xcodeproj -scheme CVNext -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build
       - name: Capture real demo screens
+        timeout-minutes: 6
         run: |
-          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for devices in d["devices"].values() for x in devices if "iPhone" in x["name"]))')
+          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for runtime,devices in sorted(d["devices"].items()) if "iOS-18" in runtime for x in devices if "iPhone" in x["name"]))')
+          echo "Using iOS 18 simulator: $DEVICE"
+          open -a Simulator || true
           xcrun simctl boot "$DEVICE"
-          xcrun simctl bootstatus "$DEVICE" -b
+          python3 -c 'import subprocess,sys; subprocess.run(["xcrun","simctl","bootstatus",sys.argv[1],"-b"],check=True,timeout=180)' "$DEVICE"
           xcrun simctl status_bar "$DEVICE" override --time '9:41' --batteryState charged --batteryLevel 100
           xcrun simctl install "$DEVICE" ios/build/Build/Products/Debug-iphonesimulator/CVNext.app
           mkdir -p screenshots
@@ -40,6 +43,7 @@ jobs:
             xcrun simctl io "$DEVICE" screenshot "screenshots/ios-$screen.png"
           done
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: ios-screenshots
           path: screenshots/*.png
