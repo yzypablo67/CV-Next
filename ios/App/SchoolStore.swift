@@ -117,7 +117,7 @@ import CVNextCore
         do{try SessionVault.save(selected);generation=UUID();busy=false;account=selected;demo=false;grades=[];notices=[];error=nil;noticeError=nil;loadCached();Task{await refresh()}}
         catch{self.error=error.localizedDescription}
     }
-    func enterDemo(){addingAccount=false;generation=UUID();demo=true;error=nil;noticeError=nil;grades=DemoData.grades;notices=DemoSchool.notices;lastUpdated=nil;showingCached=false}
+    func enterDemo(){busy=false;addingAccount=false;generation=UUID();demo=true;error=nil;noticeError=nil;grades=DemoData.grades;notices=DemoSchool.notices;lastUpdated=nil;showingCached=false}
     func logout(){
         generation=UUID()
         if !demo,let current=account {
@@ -127,6 +127,6 @@ import CVNextCore
             LocalData.clear(account:current.studentID)
             for category in ["grades","notices","agenda"]{UserDefaults.standard.removeObject(forKey:"known-\(current.studentID)-\(category)")}
         }
-        SessionVault.clear();account=nil;demo=false;grades=[];notices=[];error=nil;noticeError=nil;choices=[];lastUpdated=nil;showingCached=false
+        busy=false;SessionVault.clear();account=nil;demo=false;grades=[];notices=[];error=nil;noticeError=nil;choices=[];lastUpdated=nil;showingCached=false
     }
 }

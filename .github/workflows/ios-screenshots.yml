@@ -8,40 +8,54 @@ permissions:
   contents: read
 jobs:
   screenshots:
-    runs-on: macos-15-intel
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode and generate project
         run: |
-          if [ -d /Applications/Xcode_16.4.app ]; then XCODE=/Applications/Xcode_16.4.app; else XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1); fi
+          XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1)
           sudo xcode-select -s "$XCODE/Contents/Developer"
           xcodebuild -version
           command -v xcodegen || brew install xcodegen
           cd ios && xcodegen generate
+      - name: Start simulator
+        timeout-minutes: 10
+        run: |
+          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for runtime,devices in sorted(d["devices"].items(),reverse=True) if "iOS" in runtime for x in devices if "iPhone" in x["name"]))')
+          echo "DEVICE=$DEVICE" >> "$GITHUB_ENV"
+          xcrun simctl boot "$DEVICE"
       - name: Build simulator app
         run: xcodebuild -project ios/CVNext.xcodeproj -scheme CVNext -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build
       - name: Capture real demo screens
-        timeout-minutes: 6
+        timeout-minutes: 10
         run: |
-          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for runtime,devices in sorted(d["devices"].items()) if "iOS-18" in runtime for x in devices if "iPhone" in x["name"]))')
-          echo "Using iOS 18 simulator: $DEVICE"
-          open -a Simulator || true
-          xcrun simctl boot "$DEVICE"
-          python3 -c 'import subprocess,sys; subprocess.run(["xcrun","simctl","bootstatus",sys.argv[1],"-b"],check=True,timeout=180)' "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
           xcrun simctl status_bar "$DEVICE" override --time '9:41' --batteryState charged --batteryLevel 100
           xcrun simctl install "$DEVICE" ios/build/Build/Products/Debug-iphonesimulator/CVNext.app
           mkdir -p screenshots
-          for screen in login home grades settings; do
-            xcrun simctl terminate "$DEVICE" io.github.yzypablo67.cvnext.ios || true
-            case "$screen" in
-              login) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios ;;
-              home) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=0 ;;
-              grades) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=1 ;;
-              settings) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=3 ;;
-            esac
-            sleep 4
-            xcrun simctl io "$DEVICE" screenshot "screenshots/ios-$screen.png"
+          for theme in dark light; do
+            xcrun simctl ui "$DEVICE" appearance "$theme"
+            for screen in home day grades notices functions; do
+              case "$screen" in
+                home) TAB=0 ;; day) TAB=1 ;; grades) TAB=2 ;; notices) TAB=3 ;; functions) TAB=4 ;;
+              esac
+              xcrun simctl terminate "$DEVICE" io.github.yzypablo67.cvnext.ios || true
+              xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo "--tab=$TAB"
+              sleep 4
+              xcrun simctl io "$DEVICE" screenshot "screenshots/ios-$screen-$theme.png"
+            done
           done
+      - name: Export demo PNGs in logs
+        run: |
+          python3 - <<'PY'
+          import base64,pathlib
+          for image in sorted(pathlib.Path("screenshots").glob("*.png")):
+              print("CVNEXT_IMAGE_BEGIN",image.name)
+              data=base64.b64encode(image.read_bytes()).decode()
+              for offset in range(0,len(data),3000):
+                  print("CVNEXT_IMAGE_DATA",data[offset:offset+3000])
+              print("CVNEXT_IMAGE_END",image.name)
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
