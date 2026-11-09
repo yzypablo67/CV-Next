@@ -31,17 +31,17 @@ Voti e medie, giornata scolastica, compiti, circolari, documenti e notifiche in 
 
 <table>
   <tr>
-    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-phone.png"><img src="docs/screenshots/android-home-phone.png" alt="CV Next 1.6.14: Home, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-phone.png"><img src="docs/screenshots/android-day-phone.png" alt="CV Next 1.6.14: Giornata, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-phone.png"><img src="docs/screenshots/android-grades-phone.png" alt="CV Next 1.6.14: Voti, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-phone.png"><img src="docs/screenshots/android-home-phone.png" alt="CV Next 1.6.15: Home, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-phone.png"><img src="docs/screenshots/android-day-phone.png" alt="CV Next 1.6.15: Giornata, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-phone.png"><img src="docs/screenshots/android-grades-phone.png" alt="CV Next 1.6.15: Voti, layout telefono, dati demo" width="240"></a></td>
   </tr>
   <tr>
-    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-phone.png"><img src="docs/screenshots/android-notices-phone.png" alt="CV Next 1.6.14: Bacheca, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-phone.png"><img src="docs/screenshots/android-functions-phone.png" alt="CV Next 1.6.14: Funzioni, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-phone.png"><img src="docs/screenshots/android-notices-phone.png" alt="CV Next 1.6.15: Bacheca, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-phone.png"><img src="docs/screenshots/android-functions-phone.png" alt="CV Next 1.6.15: Funzioni, layout telefono, dati demo" width="240"></a></td>
   </tr>
 </table>
 
-Schermate reali della UI Android **1.6.14 in formato telefono**, acquisite su emulatore con risposte API dimostrative locali. Le immagini mostrano i ritocchi implementati; nomi, voti e comunicazioni sono dati fittizi. Non sono mockup generati. Tocca una schermata per aprirla a grandezza intera.
+Schermate reali della UI Android **1.6.15 in formato telefono**, acquisite su emulatore con risposte API dimostrative locali. Le immagini mostrano i ritocchi implementati; nomi, voti e comunicazioni sono dati fittizi. Non sono mockup generati. Tocca una schermata per aprirla a grandezza intera.
 
 ### Cosa trovi nell’app
 
