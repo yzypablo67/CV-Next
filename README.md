@@ -66,7 +66,7 @@ Il porting usa SwiftUI e i materiali nativi di Apple: **Liquid Glass su iOS 26**
 
 Disponibili nella prima anteprima: login, scelta dello studente, Home, Voti per periodo, medie, dettaglio materia, lista Bacheca con ricerca e modalità demo. Agenda, PDF, notifiche e altre funzioni sono ancora in sviluppo.
 
-**[Apri la guida iOS con screenshot e istruzioni di firma →](ios/README.md)**
+**[Apri la guida iOS e le istruzioni di firma →](ios/README.md)**
 
 ## Compilazioni e download
 
