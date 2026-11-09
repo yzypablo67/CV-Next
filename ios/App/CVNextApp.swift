@@ -1,6 +1,7 @@
 import SwiftUI
 import CVNextCore
 import Security
+import Charts
 
 @main
 struct CVNextApp: App {
@@ -36,41 +37,6 @@ enum SessionVault {
     enum VaultError: LocalizedError {case failed; var errorDescription:String?{"Impossibile salvare la sessione nel portachiavi."}}
 }
 
-@MainActor final class SchoolStore: ObservableObject {
-    @Published var account: Session? = SessionVault.load()
-    @Published var demo=false
-    @Published var grades:[Grade]=[]
-    @Published var notices:[Notice]=[]
-    @Published var choices:[StudentChoice]=[]
-    @Published var busy=false
-    @Published var error:String?
-    @Published var noticeError:String?
-    private let api=ClasseVivaAPI()
-    init() {
-        #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("--demo") {account=nil;demo=true;grades=DemoData.grades}
-        #endif
-    }
-    func login(_ username:String,_ password:String,ident:String?=nil) async {
-        guard !busy else{return};busy=true;error=nil
-        defer{busy=false}
-        do {
-            switch try await api.login(username:username,password:password,ident:ident) {
-            case .choose(let options):choices=options
-            case .authenticated(let session):try SessionVault.save(session);choices=[];account=session
-            }
-        }catch{self.error=error.localizedDescription}
-    }
-    func refresh() async {
-        guard !demo, let account, !busy else{return};busy=true;error=nil;noticeError=nil
-        defer{busy=false}
-        do {grades=try await api.grades(for:account)} catch {self.error=error.localizedDescription}
-        do {notices=try await api.notices(for:account)} catch {noticeError=error.localizedDescription}
-    }
-    func enterDemo(){error=nil;demo=true;grades=DemoData.grades;notices=[]}
-    func logout(){SessionVault.clear();account=nil;demo=false;grades=[];notices=[];error=nil;noticeError=nil;choices=[]}
-}
-
 struct GlassCard: ViewModifier {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     func body(content:Content)->some View {
@@ -90,24 +56,38 @@ struct GlassCard: ViewModifier {
 }
 extension View {func glassCard()->some View {modifier(GlassCard())}}
 
-struct RootView: View {
+enum AppPage:Int,CaseIterable,Identifiable {
+    case home,day,grades,notices,functions
+    var id:Int{rawValue}
+    var title:String{["Home","Giornata","Voti","Bacheca","Funzioni"][rawValue]}
+    var symbol:String{["house","calendar","star","megaphone","square.grid.2x2"][rawValue]}
+}
+struct RootView:View {
     @State private var selectedTab=0
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var store:SchoolStore
+    var accountKey:String{store.demo ? "demo" : store.account?.studentID ?? "logged-out"}
     var body:some View {
         Group {
             if store.account != nil || store.demo {
-                TabView(selection:$selectedTab) {
-                    NavigationStack{HomeView()}.tabItem{Label("Home",systemImage:"house")}.tag(0)
-                    NavigationStack{GradesView()}.tabItem{Label("Voti",systemImage:"star")}.tag(1)
-                    NavigationStack{NoticeView()}.tabItem{Label("Bacheca",systemImage:"megaphone")}.tag(2)
-                    NavigationStack{SettingsView()}.tabItem{Label("Funzioni",systemImage:"square.grid.2x2")}.tag(3)
-                }.task{await store.refresh()}.onAppear {
-                    #if DEBUG
-                    if let value=ProcessInfo.processInfo.arguments.first(where:{$0.hasPrefix("--tab=")}), let tab=Int(value.dropFirst(6)), (0...3).contains(tab) {selectedTab=tab}
-                    #endif
+                if sizeClass == .regular {
+                    NavigationSplitView {
+                        List{ForEach(AppPage.allCases){page in Button{selectedTab=page.rawValue}label:{Label(page.title,systemImage:page.symbol).foregroundStyle(.primary)}.listRowBackground(selectedTab==page.rawValue ? Color.accentColor.opacity(0.16):Color.clear)}}.navigationTitle("CV Next")
+                    }detail:{NavigationStack{page(AppPage(rawValue:selectedTab) ?? .home)}.id(accountKey+String(selectedTab))}
+                }else{
+                    TabView(selection:$selectedTab){ForEach(AppPage.allCases){item in NavigationStack{page(item)}.tabItem{Label(item.title,systemImage:item.symbol)}.tag(item.rawValue)}}.id(accountKey)
                 }
             }else{LoginView()}
+        }.task(id:accountKey){await store.refresh()}
+        .sheet(isPresented:$store.addingAccount){LoginView()}
+        .onAppear{
+            #if DEBUG
+            if let argument=ProcessInfo.processInfo.arguments.first(where:{$0.hasPrefix("--tab=")}),let tab=Int(argument.dropFirst(6)),(0...4).contains(tab){selectedTab=tab}
+            #endif
         }
+    }
+    @ViewBuilder private func page(_ page:AppPage)->some View {
+        switch page{case .home:HomeView();case .day:DayView();case .grades:GradesView();case .notices:NoticeView();case .functions:FunctionsView()}
     }
 }
 
@@ -143,6 +123,7 @@ struct LoginView:View {
                     Text("App non ufficiale per ClasseViva. Accesso diretto ai server Spaggiari. La password non viene salvata; la sessione resta nel portachiavi del dispositivo.").font(.footnote).foregroundStyle(.secondary)
                 }.frame(maxWidth:580).padding(28).frame(maxWidth:.infinity)
             }.background(Color(uiColor:.systemGroupedBackground))
+            .toolbar{if store.account != nil || store.demo {Button("Annulla"){store.addingAccount=false}}}
         }
     }
 }
@@ -154,13 +135,14 @@ struct HomeView:View {
             VStack(alignment:.leading,spacing:20) {
                 Text("Ciao \(store.demo ? "Alex" : store.account?.name ?? "")").font(.largeTitle.bold())
                 Text(Date.now.formatted(date:.complete,time:.omitted)).foregroundStyle(.secondary)
-                if store.demo {Label("Modalità demo · dati di esempio",systemImage:"sparkles").font(.callout)}
+                SyncStatus()
+                HStack{NavigationLink{SchoolSectionView(section:.agenda)}label:{Label("Agenda",systemImage:"calendar")};Spacer();NavigationLink{RemindersView()}label:{Label("Promemoria",systemImage:"bell")}}.font(.subheadline)
                 if let error=store.error {ErrorMessage(message:error)}
                 AverageCard(grades:store.grades,title:"Media generale · anno")
                 HStack{Text("Ultimi voti").font(.title2.bold());Spacer();if store.busy{ProgressView()}}
                 if store.grades.isEmpty && !store.busy {ContentUnavailableView("Nessun voto disponibile",systemImage:"star",description:Text("Aggiorna per caricare i voti dal registro."))}
                 ForEach(Array(store.grades.prefix(5))){GradeRow(grade:$0)}
-                Text("Prima anteprima iOS: agenda, assenze, PDF e notifiche sono ancora in sviluppo.").font(.footnote).foregroundStyle(.secondary)
+                NavigationLink{DayView()}label:{Label("Apri la giornata",systemImage:"calendar.day.timeline.left").frame(maxWidth:.infinity).padding().glassCard()}
             }.padding(20).frame(maxWidth:800).frame(maxWidth:.infinity)
         }.background(Color(uiColor:.systemGroupedBackground)).navigationTitle("Home").navigationBarTitleDisplayMode(.inline)
             .refreshable{await store.refresh()}.toolbar{ToolbarItem(placement:.topBarTrailing){Button{Task{await store.refresh()}}label:{Image(systemName:"arrow.clockwise")}.disabled(store.busy || store.demo).accessibilityLabel("Aggiorna registro")}}
@@ -173,11 +155,14 @@ struct AverageCard:View {
         let valid=grades.filter(\.counts).count
         let average=GradeMath.average(grades)
         VStack(alignment:.leading,spacing:10) {
-            Text(title).font(.headline)
-            Text(GradeMath.formatted(average)).font(.system(size:44,weight:.semibold,design:.rounded)).monospacedDigit()
-            Text("\(valid) voti validi · \(grades.count-valid) esclusi").font(.subheadline).foregroundStyle(.secondary)
-            if let average {Label(average>=6 ? "Sufficiente" : "Sotto il 6",systemImage:average>=6 ? "checkmark.circle" : "exclamationmark.circle").foregroundStyle(average>=6 ? Color.green : Color.orange)}
-        }.frame(maxWidth:.infinity,alignment:.leading).padding(24).glassCard()
+            Text(title).font(.subheadline).foregroundStyle(.secondary)
+            HStack(alignment:.firstTextBaseline){
+                Text(GradeMath.formatted(average)).font(.system(size:34,weight:.semibold,design:.rounded)).monospacedDigit()
+                Spacer()
+                if let average{Label(average>=6 ? "Sufficiente":"Sotto il 6",systemImage:average>=6 ? "checkmark.circle":"exclamationmark.circle").font(.caption).foregroundStyle(average>=6 ? Color.green:Color.orange)}
+            }
+            Text("\(valid) voti validi · \(grades.count-valid) esclusi").font(.caption).foregroundStyle(.secondary)
+        }.frame(maxWidth:.infinity,alignment:.leading).padding(18).glassCard()
     }
 }
 struct GradeRow:View {
@@ -216,8 +201,29 @@ struct GradesView:View {
 struct SubjectView:View {
     let subject:String
     let grades:[Grade]
+    @State private var target=6.0
+    var valid:[Grade]{grades.filter(\.counts).sorted{$0.evtDate<$1.evtDate}}
     var body:some View {
-        ScrollView{VStack(spacing:18){AverageCard(grades:grades,title:"Media della materia");ForEach(grades){GradeRow(grade:$0)}}.padding(20).frame(maxWidth:800).frame(maxWidth:.infinity)}.background(Color(uiColor:.systemGroupedBackground)).navigationTitle(subject)
+        ScrollView{VStack(alignment:.leading,spacing:18){
+            AverageCard(grades:grades,title:"Media della materia")
+            if !valid.isEmpty {
+                VStack(alignment:.leading,spacing:12){
+                    Text("Andamento dei voti").font(.headline)
+                    Chart{ForEach(Array(valid.enumerated()),id:\.element.id){index,grade in
+                        LineMark(x:.value("Voto",index+1),y:.value("Valore",grade.decimalValue ?? 0))
+                        PointMark(x:.value("Voto",index+1),y:.value("Valore",grade.decimalValue ?? 0))
+                    }}.chartYScale(domain:0...10).frame(height:180)
+                    Text("Voti validi in ordine cronologico").font(.caption).foregroundStyle(.secondary)
+                }.padding(18).glassCard()
+                VStack(alignment:.leading,spacing:12){
+                    Text("Quanto devo prendere?").font(.headline)
+                    Picker("Media obiettivo",selection:$target){ForEach([6.0,7.0,8.0,9.0],id:\.self){Text(GradeMath.formatted($0)).tag($0)}}.pickerStyle(.segmented)
+                    if let needed=TargetGrade.needed(grades:grades,target:target){Text(needed>10 ? "L’obiettivo richiede più di un voto." : needed<=0 ? "Obiettivo raggiungibile con qualsiasi voto non negativo." : "Al prossimo voto serve almeno \(GradeMath.formatted(needed)).").font(.subheadline)}
+                    Text("Stima con un prossimo voto dello stesso peso degli altri, nel periodo selezionato.").font(.caption).foregroundStyle(.secondary)
+                }.padding(18).glassCard()
+            }
+            ForEach(grades){GradeRow(grade:$0)}
+        }.padding(18).frame(maxWidth:800).frame(maxWidth:.infinity)}.background(Color(uiColor:.systemGroupedBackground)).navigationTitle(subject)
     }
 }
 struct NoticeView:View {
@@ -228,12 +234,12 @@ struct NoticeView:View {
             if let error=store.noticeError{ErrorMessage(message:error)}
             if store.notices.isEmpty {ContentUnavailableView(store.demo ? "Bacheca in demo" : "Nessuna comunicazione",systemImage:"megaphone",description:Text(store.demo ? "Accedi per caricare le comunicazioni reali." : "Aggiorna per controllare il registro."))}
             ForEach(store.notices.filter{query.isEmpty || $0.cntTitle.localizedCaseInsensitiveContains(query)}){notice in
-                VStack(alignment:.leading,spacing:8){
+                NavigationLink{NoticeDetailView(notice:notice)}label:{VStack(alignment:.leading,spacing:8){
                     if notice.readStatus != true{Label("Non letta",systemImage:"circle.fill").font(.caption).foregroundStyle(.cyan)}
                     Text(notice.cntTitle).font(.headline)
                     Text([notice.pubDT.map{String($0.prefix(10))},notice.cntCategory].compactMap{$0}.joined(separator:" · ")).font(.caption).foregroundStyle(.secondary)
-                    Text("Apertura testo e allegati in sviluppo").font(.caption).foregroundStyle(.secondary)
-                }.frame(maxWidth:.infinity,alignment:.leading).padding(20).glassCard()
+                    if let attachments=notice.attachments,!attachments.isEmpty{Label("\(attachments.count) allegati",systemImage:"paperclip").font(.caption).foregroundStyle(.secondary)}
+                }.frame(maxWidth:.infinity,alignment:.leading).padding(18).glassCard()}.buttonStyle(.plain)
             }
         }.padding(20).frame(maxWidth:800).frame(maxWidth:.infinity)}.background(Color(uiColor:.systemGroupedBackground)).navigationTitle("Bacheca").searchable(text:$query,prompt:"Cerca nelle circolari").refreshable{await store.refresh()}
     }
@@ -244,16 +250,25 @@ struct SettingsView:View {
     @State private var confirmLogout=false
     var body:some View {
         Form {
-            Section("Aspetto"){Picker("Tema",selection:$appearance){Text("Sistema").tag("system");Text("Chiaro").tag("light");Text("Scuro").tag("dark")}}
-            Section("Versione iOS 0.1.0"){
-                Text("SwiftUI con Liquid Glass su iOS 26 e materiali traslucidi sulle versioni precedenti. Supporta Riduci trasparenza.")
-                Text("Disponibili: login, scelta studente, medie, periodi, dettaglio voti e lista bacheca.")
-                Text("Ancora in sviluppo: agenda, assenze, note, PDF, notifiche, più account e accesso automatico ai servizi web.")
-                Link("Codice e aggiornamenti",destination:URL(string:"https://github.com/yzypablo67/CV-Next")!)
+            Section("Aspetto"){Picker("Tema",selection:$appearance){Text("Sistema").tag("system");Text("Chiaro").tag("light");Text("Scuro").tag("dark")};Text("Rispetta Dimensioni testo e Riduci trasparenza di iOS.").font(.footnote)}
+            Section("Account"){
+                ForEach(store.accounts,id:\.studentID){account in Button{store.choose(account)}label:{HStack{Text(account.name);Spacer();if !store.demo && store.account?.studentID==account.studentID{Image(systemName:"checkmark")}}}.disabled(store.busy)}
+                Button("Aggiungi account / accedi di nuovo"){store.addingAccount=true}.disabled(store.busy)
+                Button("Esci da questo account",role:.destructive){confirmLogout=true}.disabled(store.busy)
             }
-            Section("Account"){Text(store.demo ? "Demo · nessun account reale" : store.account?.name ?? "");Button("Esci",role:.destructive){confirmLogout=true}}
-            Section{Text("CV Next non è affiliata a Gruppo Spaggiari. Nessun server dello sviluppatore, nessuna pubblicità.").font(.footnote)}
-        }.navigationTitle("Funzioni").confirmationDialog("Uscire e rimuovere la sessione dal dispositivo?",isPresented:$confirmLogout,titleVisibility:.visible){Button("Esci",role:.destructive){store.logout()}}
+            Section("Dati"){
+                SyncStatus()
+                Button("Aggiorna registro"){Task{await store.refresh()}}.disabled(store.busy || store.demo)
+                Text("Le copie offline restano sul dispositivo, separate per account ed escluse dai backup. Uscendo vengono rimosse.").font(.footnote)
+            }
+            Section("CV Next iOS 0.2.0"){
+                Text("Porting nativo SwiftUI con Liquid Glass su iOS 26 e materiali compatibili da iOS 17.")
+                Text("Agenda, giornata, voti e grafici, circolari, PDF, registro, account multipli e promemoria personali.")
+                Text("Giustificazioni e alcuni servizi richiedono il registro web. Le notifiche automatiche delle novità del registro e il widget richiedono ancora un’integrazione specifica iOS.").font(.footnote)
+                Link("Codice e aggiornamenti",destination:URL(string:"https://github.com/yzypablo67/CV-Next/tree/ios")!)
+            }
+            Section{Text("Progetto non ufficiale, non affiliato a Gruppo Spaggiari. Password non salvata; sessioni nel Portachiavi.").font(.footnote)}
+        }.navigationTitle("Impostazioni").confirmationDialog("Uscire e rimuovere sessione e dati locali di questo account?",isPresented:$confirmLogout,titleVisibility:.visible){Button("Esci",role:.destructive){store.logout()}}
     }
 }
 struct ErrorMessage:View {

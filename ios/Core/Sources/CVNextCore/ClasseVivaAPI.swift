@@ -16,12 +16,12 @@ public enum APIError: LocalizedError {
 }
 public enum LoginResult { case authenticated(Session), choose([StudentChoice]) }
 public struct ClasseVivaAPI {
-    private let session: URLSession
+    let session: URLSession
     public init(session: URLSession = URLSession(configuration: .ephemeral)) { self.session = session }
-    private func request(_ path: String, token: String? = nil, body: [String: Any]? = nil) async throws -> Data {
+    func request(_ path: String, token: String? = nil, body: [String: Any]? = nil, method: String? = nil) async throws -> Data {
         guard let url = URL(string: "https://web.spaggiari.eu/rest/v1" + path) else { throw APIError.invalidResponse }
         var request = URLRequest(url: url, timeoutInterval: 30)
-        request.httpMethod = body == nil ? "GET" : "POST"
+        request.httpMethod = method ?? (body == nil ? "GET" : "POST")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         // Same public client headers used by the recovered Android implementation.
         request.setValue("CVVS/std/4.1.7 Android/10", forHTTPHeaderField: "User-Agent")

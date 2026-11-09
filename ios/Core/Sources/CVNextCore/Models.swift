@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Grade: Decodable, Identifiable, Hashable {
+public struct Grade: Codable, Identifiable, Hashable {
     public let evtId: Int
     public let subjectDesc: String
     public let evtDate: String
@@ -52,12 +52,14 @@ public struct Session: Codable {
     public let name: String
     public init(token: String, studentID: String, name: String) { self.token=token; self.studentID=studentID; self.name=name }
 }
-public struct Notice: Decodable, Identifiable {
+public struct Notice: Codable, Identifiable {
     public let pubId: Int
     public let cntTitle: String
     public let pubDT: String?
     public let cntCategory: String?
-    public let readStatus: Bool?
+    public var readStatus: Bool?
+    public let evtCode: String?
+    public let attachments: [NoticeAttachment]?
     public var id: Int { pubId }
 }
 public enum DemoData {
@@ -66,4 +68,10 @@ public enum DemoData {
         Grade(id: 2, subject: "Matematica", date: "2026-11-05", value: "6", decimal: 6),
         Grade(id: 3, subject: "Inglese", date: "2026-11-06", value: "9", decimal: 9),
         Grade(id: 4, subject: "Italiano", date: "2026-11-07", value: "+", decimal: nil, color: "blue")]
+}
+
+public struct NoticeAttachment: Codable, Hashable, Identifiable {
+    public let fileName: String
+    public let attachNum: Int
+    public var id: Int {attachNum}
 }

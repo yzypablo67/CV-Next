@@ -1,11 +1,12 @@
-Prima anteprima nativa iOS 0.1.0 per iPhone e iPad (iOS 17+).
+## CV Next iOS 0.2.0
 
-- SwiftUI con Liquid Glass su iOS 26, materiale traslucido sulle versioni precedenti e supporto Riduci trasparenza.
-- Tema di sistema, chiaro e scuro; layout leggibile su iPhone e iPad.
-- Login diretto a ClasseViva e scelta studente; password non salvata, sessione nel Keychain.
-- Home, voti per periodo, medie aritmetiche, dettaglio per materia e lista bacheca con ricerca.
-- Demo locale per esplorare la UI senza credenziali.
+- UI più compatta, navigazione a cinque sezioni su iPhone e barra laterale su iPad.
+- Agenda, giornata, lezioni, assenze, note, file dei docenti e documenti.
+- Circolari con apertura del testo e allegati; lettore PDF con ricerca e condivisione.
+- Grafico dei voti e stima del voto necessario per raggiungere una media.
+- Più account con sessioni nel Portachiavi e cache separata per studente.
+- Copie offline dei dati già consultati, data di aggiornamento e stato offline espliciti.
+- Promemoria personali con notifiche locali, attivate solo su richiesta.
+- Collegamenti ai servizi web della scuola.
 
-**L’IPA è NON FIRMATO**, destinato alla firma e installazione tramite AltStore/Sideloadly. Non si installa toccando il file. La firma APK Android non è valida su iOS.
-
-Porting iniziale: agenda, assenze, PDF, notifiche e altre funzioni Android non sono ancora disponibili. Login e API non provati con un account reale. Le limitazioni e la durata della firma dipendono dal proprio account Apple e dal metodo di installazione. Non è una release App Store o TestFlight.
+IPA non firmato per AltStore/Sideloadly, iOS 17+. I servizi reali richiedono ancora verifica con un account ClasseViva; dati demo disponibili. Le giustificazioni e alcuni servizi restano sul sito web. Notifiche automatiche delle novità e widget richiedono ulteriore integrazione iOS: questa versione non dichiara parità completa con Android.
