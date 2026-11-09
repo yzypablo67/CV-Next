@@ -117,7 +117,7 @@ La firma automatica richiede i segreti repository `ANDROID_KEYSTORE_BASE64` e `A
 
 ## Verifica e limiti
 
-Assemblaggio DEX, compilazione risorse, allineamento ZIP e verifica della firma APK. Non testato su dispositivo Android. Non sono recuperati i sorgenti Kotlin originali, la cronologia Git, i commenti e la configurazione Gradle. La disponibilità delle funzioni di ClasseViva dipende dai servizi esterni e dalle credenziali dell’utente.
+Assemblaggio DEX, compilazione risorse, test dei metodi reali, allineamento ZIP e verifica della firma APK. Interfaccia verificata su emulatore telefono con dati demo; non verificata su dispositivo fisico con un account reale. Non sono recuperati i sorgenti Kotlin originali, la cronologia Git, i commenti e la configurazione Gradle. La disponibilità delle funzioni di ClasseViva dipende dai servizi esterni e dalle credenziali dell’utente.
 
 ## Avvertenza e dipendenze
 
@@ -127,9 +127,9 @@ Progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spagg
 
 `bash scripts/test-average.sh` estrae i metodi Smali reali `fy.G`, `fy.k` e `bo.g0`, li assembla in DEX e li esegue sulla JVM tramite dex2jar (con ricostruzione degli stack map frames tramite ASM). Il test verifica il caso 6, 6 e 9 in materie diverse (7,00), voti esclusi e nulli, decimali, liste vuote e singolo voto. Gli unici stub sono il contenitore del voto e il gestore di overflow del conteggio. La correzione riguarda la media generale; la selezione del periodo e le medie delle singole materie continuano a usare il codice recuperato.
 
-## UI 1.6.14
+## UI 1.6.15
 
-Stile originale conservato. Scheda media con superficie e testo del tema attivo (chiaro, scuro e colori dinamici), stato testuale sufficiente/insufficiente e anello originale. Conteggi distinti dei voti numerici validi ed esclusi, con numero di materie con voti validi. Metadati delle comunicazioni non lette con etichetta esplicita. Spaziatura interna del riepilogo voti portata da 20 a 24 dp.
+Stile originale conservato. Scheda media con superficie e testo del tema attivo (chiaro, scuro e colori dinamici), stato testuale sufficiente/insufficiente e anello originale. Conteggi distinti dei voti numerici validi ed esclusi, con numero di materie con voti validi. Metadati delle comunicazioni non lette con etichetta esplicita. Nella 1.6.15 il riepilogo è più compatto: spaziatura interna di 18 dp, anello da 48 dp, numero della media più contenuto e conteggi senza ripetizioni.
 
 Il codice leggibile dei nuovi helper è `app/ui/UiPolish.java`; gli stub in `tests/fixtures/UiStubs.java` servono solo a ricostruirne lo Smali e non entrano nell’APK. Rigenerazione: `DEX2JAR_HOME=... python3 scripts/generate-ui.py`.
 
