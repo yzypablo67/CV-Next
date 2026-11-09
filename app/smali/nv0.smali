@@ -1,0 +1,24 @@
+.class public abstract Lnv0;
+.super Ljava/lang/Object;
+.source "r8-map-id-6a209b7b99fbc11872c56e96745aa09bf58b9a48696b65f06f55729d68d83cf8"
+
+
+# static fields
+.field public static final a:Lmv0;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 1
+
+    .line 1
+    sget-object v0, Lmv0;->m:Lmv0;
+
+    .line 2
+    .line 3
+    sput-object v0, Lnv0;->a:Lmv0;
+
+    .line 4
+    .line 5
+    return-void
+.end method

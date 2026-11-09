@@ -1,0 +1,8 @@
+/.tools/
+/dist/
+/app/build/
+/app/dist/
+*.jks
+*.keystore
+*.p12
+.env

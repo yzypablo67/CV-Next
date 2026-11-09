@@ -1,0 +1,11 @@
+.class public final Lj30;
+.super Lzr;
+.source "r8-map-id-6a209b7b99fbc11872c56e96745aa09bf58b9a48696b65f06f55729d68d83cf8"
+
+
+# instance fields
+.field public g:Li30;
+
+.field public h:Z
+
+.field public i:Z
