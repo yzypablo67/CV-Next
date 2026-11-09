@@ -27,17 +27,23 @@ Client non ufficiale per ClasseViva · Android e iOS
 
 Voti e medie, giornata scolastica, compiti, circolari, documenti e notifiche in un’interfaccia adattata a telefono e tablet.
 
-<p align="center">
-  <img src="docs/screenshots/android-functions-tablet.jpg" alt="Schermata reale Funzioni di CV Next Android su tablet, in tema scuro" width="900">
-</p>
-<p align="center"><sub>Screenshot reale fornito dall’autore: schermata Funzioni, tablet, tema scuro. Riferimento visivo dell’app; può precedere gli ultimi ritocchi.</sub></p>
+### Screenshot
 
-<details>
-<summary>Altra schermata Android: Bacheca</summary>
+<table>
+  <tr>
+    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-tablet.jpg"><img src="docs/screenshots/android-home-tablet.jpg" alt="CV Next Android: Home, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-tablet.jpg"><img src="docs/screenshots/android-day-tablet.jpg" alt="CV Next Android: Giornata, tablet in tema scuro" width="420"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-tablet.jpg"><img src="docs/screenshots/android-grades-tablet.jpg" alt="CV Next Android: Voti, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-tablet.jpg"><img src="docs/screenshots/android-notices-tablet.jpg" alt="CV Next Android: Bacheca, tablet in tema scuro" width="420"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-tablet.jpg"><img src="docs/screenshots/android-functions-tablet.jpg" alt="CV Next Android: Funzioni, tablet in tema scuro" width="420"></a></td>
+  </tr>
+</table>
 
-<img src="docs/screenshots/android-notices-tablet.jpg" alt="Schermata reale Bacheca Android su tablet, con ricerca, categorie e allegati PDF" width="900">
-
-</details>
+Schermate Android fornite dall’autore, in tema scuro su tablet. Tocca un’immagine per aprirla a grandezza intera. Sono riferimenti della versione precedente ai ritocchi recenti: valori e dettagli possono differire dalla release attuale.
 
 ### Cosa trovi nell’app
 

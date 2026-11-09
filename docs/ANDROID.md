@@ -6,6 +6,24 @@ App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack
 
 Android 8.0 o successivo (API 26). Versione recuperata: **1.6.14**.
 
+## Screenshot
+
+<table>
+  <tr>
+    <td align="center"><strong>Home</strong><br><a href="screenshots/android-home-tablet.jpg"><img src="screenshots/android-home-tablet.jpg" alt="CV Next Android: Home, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Giornata</strong><br><a href="screenshots/android-day-tablet.jpg"><img src="screenshots/android-day-tablet.jpg" alt="CV Next Android: Giornata, tablet in tema scuro" width="420"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Voti</strong><br><a href="screenshots/android-grades-tablet.jpg"><img src="screenshots/android-grades-tablet.jpg" alt="CV Next Android: Voti, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Bacheca</strong><br><a href="screenshots/android-notices-tablet.jpg"><img src="screenshots/android-notices-tablet.jpg" alt="CV Next Android: Bacheca, tablet in tema scuro" width="420"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Funzioni</strong><br><a href="screenshots/android-functions-tablet.jpg"><img src="screenshots/android-functions-tablet.jpg" alt="CV Next Android: Funzioni, tablet in tema scuro" width="420"></a></td>
+  </tr>
+</table>
+
+Schermate Android fornite dall’autore, in tema scuro su tablet. Tocca un’immagine per aprirla a grandezza intera. Sono riferimenti della versione precedente ai ritocchi recenti: valori e dettagli possono differire dalla release attuale.
+
 ## Stato del recupero
 
 Progetto ricostruito dall’APK 1.6.11 fornito dall’autore dopo la perdita di accesso alla repository originale `mattcoc/cv-next`. Il codice compilabile è in **Smali**, con risorse Android decodificate: non è il progetto Kotlin/Gradle originale. Il codice è offuscato e include dipendenze incorporate nell’APK.
