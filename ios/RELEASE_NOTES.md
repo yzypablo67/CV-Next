@@ -8,6 +8,7 @@
 - Copie offline dei dati già consultati, data di aggiornamento e stato offline espliciti.
 - Promemoria personali con notifiche locali, attivate solo su richiesta.
 - Controlli in background per nuovi voti, comunicazioni e agenda, con consenso esplicito e senza notificare lo storico al primo controllo.
-- Collegamenti ai servizi web della scuola.
+- Collegamenti ai servizi web della scuola e widget con accesso rapido alle sezioni.
+- Copia protetta dei PDF già aperti, con ricerca, condivisione e riapertura offline.
 
-IPA non firmato per AltStore/Sideloadly, iOS 17+. I servizi reali richiedono ancora verifica con un account ClasseViva; dati demo disponibili. Le giustificazioni e alcuni servizi restano sul sito web. Gli avvisi in background dipendono dalla pianificazione di iOS e non sono push in tempo reale. Widget, rinnovo della sessione senza reinserire la password e accesso automatico ai servizi web non sono ancora equivalenti alla versione Android.
+IPA non firmato per AltStore/Sideloadly, iOS 17+. I servizi reali richiedono ancora verifica con un account ClasseViva; dati demo disponibili. Le giustificazioni e alcuni servizi restano sul sito web. Gli avvisi in background dipendono dalla pianificazione di iOS e non sono push in tempo reale. Il widget offre collegamenti rapidi, non una lista dei compiti. Rinnovo della sessione senza reinserire la password e accesso automatico ai servizi web non sono ancora equivalenti alla versione Android.

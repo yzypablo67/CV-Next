@@ -45,3 +45,5 @@ extension SessionVault {
     }
 }
 struct RecordLoad {let records:[SchoolRecord];let date:Date;let cached:Bool;let warning:String?}
+
+struct ResourceLoad {let value:SchoolResource;let cachedDate:Date?}

@@ -2,7 +2,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-public enum SchoolResource {case pdf(Data), html(String), link(URL)}
+public enum SchoolResource:Codable {case pdf(Data), html(String), link(URL)}
 extension ClasseVivaAPI {
     public func records(_ section:SchoolSection,for account:Session,from:Date,to:Date) async throws -> [SchoolRecord] {
         let data=try await request("/students/\(account.studentID)"+section.path(from:from,to:to),token:account.token,method:section == .documents ? "POST" : nil)

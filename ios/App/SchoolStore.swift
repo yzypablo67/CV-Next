@@ -98,12 +98,20 @@ import CVNextCore
             throw error
         }
     }
-    func resource(path:String,method:String="GET",checkPath:String?=nil) async throws -> SchoolResource {
+    func resource(path:String,method:String="GET",checkPath:String?=nil) async throws -> ResourceLoad {
         guard let session=account,!demo else{throw APIError.invalidResponse}
-        let expected=generation
-        let result=try await api.resource(path:path,method:method,checkPath:checkPath,for:session)
-        guard expected==generation,!Task.isCancelled else{throw CancellationError()}
-        return result
+        let expected=generation;let key="resource-"+method+path
+        do {
+            let result=try await api.resource(path:path,method:method,checkPath:checkPath,for:session)
+            guard expected==generation,!Task.isCancelled else{throw CancellationError()}
+            switch result{case .pdf,.html:try? LocalData.save(result,key:key,account:session.studentID);case .link:break}
+            return ResourceLoad(value:result,cachedDate:nil)
+        }catch is CancellationError{throw CancellationError()}
+        catch {
+            guard expected==generation else{throw CancellationError()}
+            if let saved=LocalData.load(SchoolResource.self,key:key,account:session.studentID){return ResourceLoad(value:saved.value,cachedDate:saved.date)}
+            throw error
+        }
     }
     func choose(_ selected:Session){
         do{try SessionVault.save(selected);generation=UUID();busy=false;account=selected;demo=false;grades=[];notices=[];error=nil;noticeError=nil;loadCached();Task{await refresh()}}

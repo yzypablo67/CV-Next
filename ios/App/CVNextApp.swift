@@ -65,6 +65,7 @@ enum AppPage:Int,CaseIterable,Identifiable {
 }
 struct RootView:View {
     @State private var selectedTab=0
+    @State private var showAgenda=false
     @Environment(\.horizontalSizeClass) private var sizeClass
     @EnvironmentObject private var store:SchoolStore
     var accountKey:String{store.demo ? "demo" : store.account?.studentID ?? "logged-out"}
@@ -82,7 +83,11 @@ struct RootView:View {
         }.task(id:accountKey){await store.refresh()}
         .onReceive(NotificationCenter.default.publisher(for:BackgroundUpdates.openPage).receive(on:RunLoop.main)){notification in
             if let id=notification.userInfo?["account"] as? String,let selected=store.accounts.first(where:{$0.studentID==id}),store.account?.studentID != id{store.choose(selected)}
-            switch notification.userInfo?["page"] as? String{case "grades":selectedTab=2;case "notices":selectedTab=3;case "agenda":selectedTab=4;default:break}
+            switch notification.userInfo?["page"] as? String{case "grades":selectedTab=2;case "notices":selectedTab=3;case "agenda":selectedTab=4;showAgenda=true;default:break}
+        }
+        .onOpenURL{url in
+            guard url.scheme=="cvnext" else{return}
+            switch url.host{case "home":selectedTab=0;case "day":selectedTab=1;case "grades":selectedTab=2;case "notices":selectedTab=3;case "agenda":selectedTab=4;showAgenda=true;default:break}
         }
         .sheet(isPresented:$store.addingAccount){LoginView()}
         .onAppear{
@@ -92,7 +97,7 @@ struct RootView:View {
         }
     }
     @ViewBuilder private func page(_ page:AppPage)->some View {
-        switch page{case .home:HomeView();case .day:DayView();case .grades:GradesView();case .notices:NoticeView();case .functions:FunctionsView()}
+        switch page{case .home:HomeView();case .day:DayView();case .grades:GradesView();case .notices:NoticeView();case .functions:FunctionsView().navigationDestination(isPresented:$showAgenda){SchoolSectionView(section:.agenda)}}
     }
 }
 
@@ -274,7 +279,7 @@ struct SettingsView:View {
             Section("CV Next iOS 0.2.0"){
                 Text("Porting nativo SwiftUI con Liquid Glass su iOS 26 e materiali compatibili da iOS 17.")
                 Text("Agenda, giornata, voti e grafici, circolari, PDF, registro, account multipli e promemoria personali.")
-                Text("Giustificazioni e alcuni servizi richiedono il registro web. I controlli in background seguono le regole di iOS. Il widget richiede ancora un’integrazione specifica.").font(.footnote)
+                Text("Giustificazioni e alcuni servizi richiedono il registro web. I controlli in background seguono le regole di iOS. Il widget offre collegamenti rapidi; non mostra dati scolastici sulla schermata di blocco.").font(.footnote)
                 Link("Codice e aggiornamenti",destination:URL(string:"https://github.com/yzypablo67/CV-Next/tree/ios")!)
             }
             Section{Text("Progetto non ufficiale, non affiliato a Gruppo Spaggiari. Password non salvata; sessioni nel Portachiavi.").font(.footnote)}

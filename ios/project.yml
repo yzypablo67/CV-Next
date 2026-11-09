@@ -21,8 +21,13 @@ targets:
       properties:
         UIBackgroundModes: [fetch]
         BGTaskSchedulerPermittedIdentifiers: [io.github.yzypablo67.cvnext.refresh]
+        CFBundleURLTypes:
+          - CFBundleURLName: io.github.yzypablo67.cvnext
+            CFBundleURLSchemes: [cvnext]
     dependencies:
       - package: CVNextCore
+      - target: CVNextWidget
+        embed: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: io.github.yzypablo67.cvnext.ios
@@ -35,6 +40,22 @@ targets:
         INFOPLIST_KEY_UIRequiresFullScreen: NO
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: 'UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight'
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: 'UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight'
+  CVNextWidget:
+    type: app-extension
+    platform: iOS
+    sources: [Widget]
+    info:
+      path: Generated/Widget-Info.plist
+      properties:
+        CFBundleDisplayName: CV Next
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.yzypablo67.cvnext.ios.widget
+        TARGETED_DEVICE_FAMILY: '1,2'
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
 schemes:
   CVNext:
     build:

@@ -139,6 +139,7 @@ struct ResourceView:View {
     @State private var error:String?
     @State private var sharedFile:URL?
     @State private var query=""
+    @State private var cacheDate:Date?
     var body:some View {
         Group {
             if let resource {
@@ -149,10 +150,12 @@ struct ResourceView:View {
                 }
             }else if let error{ContentUnavailableView("Documento non disponibile",systemImage:"doc.badge.ellipsis",description:Text(error))}
             else{ProgressView("Apertura documento…")}
-        }.navigationTitle(title).navigationBarTitleDisplayMode(.inline).toolbar{if let sharedFile{ShareLink(item:sharedFile){Image(systemName:"square.and.arrow.up")}.accessibilityLabel("Salva o condividi PDF")}}
+        }.safeAreaInset(edge:.bottom){if let cacheDate{Label("Copia offline · \(cacheDate.formatted())",systemImage:"wifi.slash").font(.caption).padding().frame(maxWidth:.infinity).background(.bar)}}.navigationTitle(title).navigationBarTitleDisplayMode(.inline).toolbar{if let sharedFile{ShareLink(item:sharedFile){Image(systemName:"square.and.arrow.up")}.accessibilityLabel("Salva o condividi PDF")}}
         .task{
             do{
-                let loaded=try await store.resource(path:path,method:method,checkPath:checkPath)
+                let result=try await store.resource(path:path,method:method,checkPath:checkPath)
+                cacheDate=result.cachedDate
+                let loaded=result.value
                 if case .pdf(let data)=loaded {
                     let url=FileManager.default.temporaryDirectory.appendingPathComponent("CVNext-\(UUID().uuidString).pdf")
                     try data.write(to:url,options:[.atomic,.completeFileProtectionUnlessOpen]);sharedFile=url
