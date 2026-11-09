@@ -116,3 +116,7 @@ Progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spagg
 Stile originale conservato. Scheda media con superficie e testo del tema attivo (chiaro, scuro e colori dinamici), stato testuale sufficiente/insufficiente e anello originale. Conteggi distinti dei voti numerici validi ed esclusi, con numero di materie con voti validi. Metadati delle comunicazioni non lette con etichetta esplicita. Spaziatura interna del riepilogo voti portata da 20 a 24 dp.
 
 Il codice leggibile dei nuovi helper è `app/ui/UiPolish.java`; gli stub in `tests/fixtures/UiStubs.java` servono solo a ricostruirne lo Smali e non entrano nell’APK. Rigenerazione: `DEX2JAR_HOME=... python3 scripts/generate-ui.py`.
+
+## Versione iOS in sviluppo
+
+Il porting nativo SwiftUI è in [`ios/`](ios/README.md), con progetto XcodeGen, test del core e workflow macOS per produrre un IPA non firmato da installare tramite AltStore/Sideloadly. Le prerelease iOS sono separate dagli aggiornamenti Android.

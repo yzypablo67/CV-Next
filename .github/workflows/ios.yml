@@ -1,0 +1,47 @@
+name: Build iOS IPA
+on:
+  push:
+    branches: [main]
+    paths: ['ios/**', '.github/workflows/ios.yml']
+    tags: ['ios-v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest installed Xcode
+        run: |
+          XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1)
+          test -n "$XCODE"
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
+      - name: Core regression tests
+        run: swift test --package-path ios/Core
+      - name: Generate Xcode project
+        run: |
+          command -v xcodegen || brew install xcodegen
+          cd ios
+          xcodegen generate
+      - name: Build device app
+        run: |
+          xcodebuild -project ios/CVNext.xcodeproj -scheme CVNext -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p ios/dist/Payload
+          cp -R ios/build/Build/Products/Release-iphoneos/CVNext.app ios/dist/Payload/
+          cd ios/dist
+          zip -qry CV-Next-iOS-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CV-Next-iOS-unsigned
+          path: ios/dist/CV-Next-iOS-unsigned.ipa
+      - name: Publish iOS prerelease
+        if: startsWith(github.ref, 'refs/tags/ios-v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" ios/dist/CV-Next-iOS-unsigned.ipa --title 'CV Next iOS preview 0.1.0' --notes-file ios/RELEASE_NOTES.md --prerelease --latest=false
