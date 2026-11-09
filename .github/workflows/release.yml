@@ -34,6 +34,8 @@ jobs:
         run: |
           if [ ! -f "$SIGNING_KEYSTORE" ]; then unset SIGNING_KEYSTORE; fi
           bash scripts/build.sh
+      - name: Regression tests for overall average
+        run: bash scripts/test-average.sh
       - name: Use signed recovery APK when signing secrets are unavailable
         run: |
           python3 scripts/use-prebuilt.py

@@ -4,7 +4,7 @@ App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack
 
 [**Scarica l’ultimo APK**](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Release](https://github.com/yzypablo67/CV-Next/releases) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
-Android 8.0 o successivo (API 26). Versione recuperata: **1.6.12**.
+Android 8.0 o successivo (API 26). Versione recuperata: **1.6.13**.
 
 ## Stato del recupero
 
@@ -26,7 +26,7 @@ L’elenco seguente riporta le funzioni descritte nel README originale indicizza
 
 ### Voti
 
-- Media generale con indicatore di sufficienza.
+- Media generale aritmetica di tutti i voti numerici validi del periodo selezionato, con indicatore di sufficienza. Ogni voto pesa allo stesso modo: non si fa la media delle medie per materia.
 - Periodi scolastici e intero anno, con selezione iniziale del periodo corrente.
 - Elenco per materia o per data, con media e numero di voti.
 - Distinzione tra voti scritti, orali e pratici.
@@ -106,3 +106,7 @@ Assemblaggio DEX, compilazione risorse, allineamento ZIP e verifica della firma 
 ## Avvertenza e dipendenze
 
 Progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spaggiari Parma S.p.A. ClasseViva è un marchio dei rispettivi proprietari. I dati e i servizi appartengono ai rispettivi titolari. Il progetto recuperato incorpora librerie di terze parti: i relativi metadati e avvisi presenti nell’APK sono conservati sotto `app/unknown/`.
+
+## Test della media
+
+`bash scripts/test-average.sh` estrae i metodi Smali reali `fy.G`, `fy.k` e `bo.g0`, li assembla in DEX e li esegue sulla JVM tramite dex2jar (con ricostruzione degli stack map frames tramite ASM). Il test verifica il caso 6, 6 e 9 in materie diverse (7,00), voti esclusi e nulli, decimali, liste vuote e singolo voto. Gli unici stub sono il contenitore del voto e il gestore di overflow del conteggio. La correzione riguarda la media generale; la selezione del periodo e le medie delle singole materie continuano a usare il codice recuperato.
