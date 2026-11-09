@@ -310,6 +310,8 @@
     .line 127
     :goto_1
     iget-boolean v12, v1, Lh91;->c:Z
+    invoke-static {v11, v12}, LUiPolish;->noticeMeta(Ljava/lang/String;Z)Ljava/lang/String;
+    move-result-object v11
 
     .line 128
     .line 129

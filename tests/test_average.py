@@ -38,6 +38,7 @@ class Assemble {
     }
 }
 """)
+    (smali/'UiPolish.smali').write_text((ROOT/'app/smali/UiPolish.smali').read_text())
     subprocess.run(['java', '-cp', str(APKTOOL), str(work/'Assemble.java'), str(smali), str(work/'test.dex')], check=True)
     subprocess.run(['bash', str(DEX2JAR/'d2j-dex2jar.sh'), '--force', '--output', str(work/'test.jar'), str(work/'test.dex')], check=True)
     (work/'AverageTest.java').write_text('''
@@ -49,6 +50,13 @@ class vg0 {
     vg0(String subject, Double value, boolean counts) {a=subject;d=value;i=counts;}
 }
 class co {public static void W(){throw new ArithmeticException("Count overflow");}}
+class fo1 {}
+class n50 extends fo1 {}
+class po {static n50 a = new n50();}
+class no {public long G,q; no(long surface,long text){G=surface;q=text;}}
+class dg0 {no scheme;dg0(no s){scheme=s;}public Object j(fo1 key){return scheme;}}
+class io {public long a;public io(long color){a=color;}}
+class mg1 {public Object e,f;public mg1(Object x,Object y){e=x;f=y;}}
 public class AverageTest {
     static vg0 g(String s, Double v, boolean counts){return new vg0(s,v,counts);}
     static void check(String name, List<vg0> grades, Double expected) {
@@ -65,6 +73,25 @@ public class AverageTest {
         check("empty list",Collections.emptyList(),null);
         check("only excluded",Arrays.asList(g("Math",1.,false),g("English",null,true)),null);
         check("subject rename has no effect",Arrays.asList(g("A",6.,true),g("B",6.,true),g("C",9.,true)),7.);
+        String summary=UiPolish.summary(Arrays.asList(g("Math",6.,true),g("Math",6.,true),g("English",9.,true),g("Other",10.,false)));
+        if(!summary.equals("3 voti validi · 1 escluso · 2 materie con voti validi\\nSufficiente")) throw new AssertionError(summary);
+        if(!UiPolish.summary(Collections.emptyList()).contains("Nessun voto valido"))throw new AssertionError("empty UI state");
+        if(!UiPolish.summary(Arrays.asList(g("Math",5.,true))).endsWith("Sotto il 6"))throw new AssertionError("insufficient UI state");
+        if(!UiPolish.noticeMeta("9 nov",false).equals("Non letta · 9 nov"))throw new AssertionError("unread metadata");
+        if(!UiPolish.noticeMeta("9 nov",true).equals("9 nov"))throw new AssertionError("read metadata");
+        if(!UiPolish.noticeMeta("",false).equals("Non letta"))throw new AssertionError("empty metadata");
+        for(int theme=0;theme<6;theme++) {
+            no scheme=new no(100L+theme,200L+theme);
+            dg0 composer=new dg0(scheme);
+            for(Double grade:Arrays.asList(null,5.,7.)) {
+                mg1 colors=UiPolish.colors(grade,composer);
+                if(((io)colors.e).a!=scheme.G || ((io)colors.f).a!=scheme.q)throw new AssertionError("theme roles");
+            }
+            scheme.G=300L+theme;scheme.q=400L+theme;
+            mg1 changed=UiPolish.colors(7.,composer);
+            if(((io)changed.e).a!=scheme.G || ((io)changed.f).a!=scheme.q)throw new AssertionError("theme changed");
+        }
+        System.out.println("PASS UI counts, status, unread metadata and live theme roles");
     }
 }
 ''')

@@ -1,9 +1,12 @@
-## CV Next 1.6.13
+## CV Next 1.6.14
 
-- Corretta la media generale: ora somma tutti i voti numerici validi del periodo selezionato e divide per il loro numero, invece di fare la media delle medie per materia.
-- Esempio: una materia con 6 e 6 e un’altra con 9 ora restituiscono 7,00 anziché 7,50.
-- Voti annullati, esclusi dalla media o senza valore numerico continuano a essere esclusi.
-- Test eseguiti sui metodi Smali effettivi: numero diverso di voti per materia, voti esclusi/nulli, decimali, singolo voto e nessun voto valido.
-- APK firmato con la chiave dedicata già usata dalla versione 1.6.12, configurata nei segreti GitHub Actions.
+- Stile originale mantenuto: navigazione, colori Material You e schede esistenti.
+- Scheda della media con colori semantici del tema attivo, senza sfondo rosso pieno; lo stato viene indicato anche dal testo e dall’anello.
+- Conteggio distinto dei voti validi e degli esclusi, e delle materie che hanno voti validi.
+- Dicitura esplicita “Media dei voti validi” e stato “Sufficiente”, “Sotto il 6” o nessun voto valido.
+- Etichetta “Non letta” nelle informazioni delle comunicazioni, oltre al pallino colorato.
+- Riepilogo voti con spaziatura interna più ampia.
+- Le modifiche usano il tema corrente anche in modalità chiara, scura e con colori dinamici.
+- Stessa firma della 1.6.12 e della 1.6.13.
 
-Aggiornabile sopra la 1.6.12 pubblicata in questa repository. Non aggiorna direttamente l’app originale o la prima ricostruzione con firma debug. Non testato su un dispositivo Android né con un account ClasseViva reale.
+Test automatici del calcolo e degli helper UI. Non verificato visivamente su dispositivo Android; le anteprime grafiche sono indicative e non screenshot dell’APK.

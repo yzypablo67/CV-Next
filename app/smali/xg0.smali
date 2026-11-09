@@ -221,7 +221,7 @@
     move-result-object v10
 
     .line 65
-    const/high16 v11, 0x41a00000    # 20.0f
+    const/high16 v11, 0x41c00000    # 24.0f
 
     .line 66
     .line 67
@@ -574,7 +574,7 @@
 
     .line 247
     .line 248
-    const-string v3, "Media dell\'anno"
+    const-string v3, "Media dei voti validi dell\'anno"
 
     .line 249
     .line 250
@@ -606,7 +606,7 @@
     move-result-object v3
 
     .line 262
-    const-string v4, "Media \u00b7 "
+    const-string v4, "Media dei voti validi \u00b7 "
 
     .line 263
     .line 264
@@ -968,72 +968,9 @@
     .line 437
     .line 438
     iget-object v11, v0, Lxg0;->h:Ljava/util/List;
-
-    .line 439
-    .line 440
-    invoke-interface {v11}, Ljava/util/List;->size()I
-
-    .line 441
-    .line 442
-    .line 443
-    move-result v11
-
-    .line 444
-    iget-object v0, v0, Lxg0;->f:Ljava/util/TreeMap;
-
-    .line 445
-    .line 446
-    invoke-virtual {v0}, Ljava/util/TreeMap;->size()I
-
-    .line 447
-    .line 448
-    .line 449
-    move-result v12
-
-    .line 450
-    new-instance v13, Ljava/lang/StringBuilder;
-
-    .line 451
-    .line 452
-    invoke-direct {v13}, Ljava/lang/StringBuilder;-><init>()V
-
-    .line 453
-    .line 454
-    .line 455
-    invoke-virtual {v13, v11}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    .line 456
-    .line 457
-    .line 458
-    const-string v11, " voti \u00b7 "
-
-    .line 459
-    .line 460
-    invoke-virtual {v13, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 461
-    .line 462
-    .line 463
-    invoke-virtual {v13, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    .line 464
-    .line 465
-    .line 466
-    const-string v11, " materie"
-
-    .line 467
-    .line 468
-    invoke-virtual {v13, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    .line 469
-    .line 470
-    .line 471
-    invoke-virtual {v13}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    .line 472
-    .line 473
-    .line 474
+    invoke-static {v11}, LUiPolish;->summary(Ljava/util/List;)Ljava/lang/String;
     move-result-object v11
+    iget-object v0, v0, Lxg0;->f:Ljava/util/TreeMap;
 
     .line 475
     invoke-virtual {v14, v3}, Ldg0;->j(Lfo1;)Ljava/lang/Object;
@@ -2080,7 +2017,7 @@
 
     .line 998
     .line 999
-    invoke-static {v9, v4}, Lro0;->N(Ljava/lang/Double;Ldg0;)Lmg1;
+    invoke-static {v9, v4}, LUiPolish;->colors(Ljava/lang/Double;Ldg0;)Lmg1;
 
     .line 1000
     .line 1001
