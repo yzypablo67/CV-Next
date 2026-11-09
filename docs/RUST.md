@@ -1,30 +1,14 @@
-# Rust in CV Next
+# Riscrittura Rust
 
-Rust può essere usato per un nucleo condiviso Android/iOS, mantenendo le interfacce native. Non è necessario per completare il porting SwiftUI corrente.
+La riscrittura è avviata nel [branch `rust`](https://github.com/yzypablo67/CV-Next/tree/rust), con **logica e interfaccia in Rust/Dioxus** e renderer WebView.
 
-## Cosa condividere
+- Cinque sezioni, temi chiaro/scuro, layout telefono/tablet e modalità demo.
+- Calcolo delle medie, periodi, stima del voto necessario, client API e parsing delle sezioni del registro.
+- 25 test del nucleo e prove della UI con acquisizioni reali in WebAssembly.
+- Build sperimentali Android arm64 e Windows, separate dall’app attuale.
 
-- Modelli del registro e validazione delle risposte API.
-- Filtri per periodo, media generale e per materia, esclusione dei voti e stima del voto necessario.
-- Normalizzazione di agenda, assenze, note e documenti.
-- Rilevamento delle novità e deduplicazione delle notifiche.
+Questa prima versione non è ancora equivalente all’app originale. Mancano persistenza sicura, offline, notifiche, promemoria, widget, grafici, aggiornamenti automatici e lettore/condivisione PDF nativi. Le sessioni sono temporanee; i servizi reali richiedono ancora una verifica con account ClasseViva. La versione Rust iOS non è ancora compilata.
 
-Le credenziali resterebbero nei servizi sicuri delle piattaforme: Keychain su iOS e Keystore su Android. Rust riceverebbe solo i dati strettamente necessari per le operazioni richieste.
+La scelta precedente di un nucleo Rust con UI native rimane un’alternativa possibile. Il branch attuale segue la richiesta di riscrivere anche l’interfaccia: usa una WebView e non equivale a SwiftUI con Liquid Glass nativo.
 
-## Interfacce
-
-**SwiftUI su iOS** conserva Liquid Glass, accessibilità, navigazione e PDFKit. **Compose su Android** conserva Material You e adattamento a telefono/tablet. UniFFI può generare binding Swift e Kotlin verso una libreria Rust; non converte automaticamente una UI Compose in SwiftUI.
-
-Una UI interamente Rust con framework multipiattaforma sarebbe una nuova implementazione, con ulteriore lavoro per controlli nativi, accessibilità, integrazione dei servizi e stile vetro su iOS. Non è la scelta più diretta per preservare lo stile richiesto.
-
-## Migrazione possibile
-
-1. Stabilizzare contratti API e test con esempi anonimizzati.
-2. Creare una libreria Rust con le regole dei voti e verificarne i risultati contro gli attuali test.
-3. Aggiungere parsing e rilevamento novità, esponendoli con UniFFI.
-4. Integrare il nucleo nell’app SwiftUI.
-5. Ricostruire un progetto Android Kotlin/Compose mantenibile e collegarlo allo stesso nucleo.
-
-Il progetto Android attuale è stato recuperato come Smali: non contiene i sorgenti Kotlin originali. Un nucleo Rust non elimina il lavoro necessario a ricostruire quel progetto.
-
-Questa è una proposta di architettura: non è stata avviata una riscrittura Rust né sostituita la UI corrente.
+[Guida Windows e Android Studio, funzioni e screenshot](https://github.com/yzypablo67/CV-Next/blob/rust/rust/README.md) · [Prerelease Rust](https://github.com/yzypablo67/CV-Next/releases/tag/rust-v0.1.0)
