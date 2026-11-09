@@ -46,6 +46,11 @@ enum SessionVault {
     @Published var error:String?
     @Published var noticeError:String?
     private let api=ClasseVivaAPI()
+    init() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--demo") {account=nil;demo=true;grades=DemoData.grades}
+        #endif
+    }
     func login(_ username:String,_ password:String,ident:String?=nil) async {
         guard !busy else{return};busy=true;error=nil
         defer{busy=false}
@@ -86,16 +91,21 @@ struct GlassCard: ViewModifier {
 extension View {func glassCard()->some View {modifier(GlassCard())}}
 
 struct RootView: View {
+    @State private var selectedTab=0
     @EnvironmentObject private var store:SchoolStore
     var body:some View {
         Group {
             if store.account != nil || store.demo {
-                TabView {
-                    NavigationStack{HomeView()}.tabItem{Label("Home",systemImage:"house")}
-                    NavigationStack{GradesView()}.tabItem{Label("Voti",systemImage:"star")}
-                    NavigationStack{NoticeView()}.tabItem{Label("Bacheca",systemImage:"megaphone")}
-                    NavigationStack{SettingsView()}.tabItem{Label("Funzioni",systemImage:"square.grid.2x2")}
-                }.task{await store.refresh()}
+                TabView(selection:$selectedTab) {
+                    NavigationStack{HomeView()}.tabItem{Label("Home",systemImage:"house")}.tag(0)
+                    NavigationStack{GradesView()}.tabItem{Label("Voti",systemImage:"star")}.tag(1)
+                    NavigationStack{NoticeView()}.tabItem{Label("Bacheca",systemImage:"megaphone")}.tag(2)
+                    NavigationStack{SettingsView()}.tabItem{Label("Funzioni",systemImage:"square.grid.2x2")}.tag(3)
+                }.task{await store.refresh()}.onAppear {
+                    #if DEBUG
+                    if let value=ProcessInfo.processInfo.arguments.first(where:{$0.hasPrefix("--tab=")}), let tab=Int(value.dropFirst(6)), (0...3).contains(tab) {selectedTab=tab}
+                    #endif
+                }
             }else{LoginView()}
         }
     }

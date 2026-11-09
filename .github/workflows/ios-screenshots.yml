@@ -1,0 +1,45 @@
+name: iOS screenshots
+on:
+  push:
+    branches: [ios]
+    paths: ['.github/workflows/ios-screenshots.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  screenshots:
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode and generate project
+        run: |
+          XCODE=$(find /Applications -maxdepth 1 -name 'Xcode*.app' | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
+          command -v xcodegen || brew install xcodegen
+          cd ios && xcodegen generate
+      - name: Build simulator app
+        run: xcodebuild -project ios/CVNext.xcodeproj -scheme CVNext -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build
+      - name: Capture real demo screens
+        run: |
+          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for devices in d["devices"].values() for x in devices if "iPhone" in x["name"]))')
+          xcrun simctl boot "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
+          xcrun simctl status_bar "$DEVICE" override --time '9:41' --batteryState charged --batteryLevel 100
+          xcrun simctl install "$DEVICE" ios/build/Build/Products/Debug-iphonesimulator/CVNext.app
+          mkdir -p screenshots
+          for screen in login home grades settings; do
+            xcrun simctl terminate "$DEVICE" io.github.yzypablo67.cvnext.ios || true
+            case "$screen" in
+              login) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios ;;
+              home) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=0 ;;
+              grades) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=1 ;;
+              settings) xcrun simctl launch "$DEVICE" io.github.yzypablo67.cvnext.ios --demo --tab=3 ;;
+            esac
+            sleep 4
+            xcrun simctl io "$DEVICE" screenshot "screenshots/ios-$screen.png"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-screenshots
+          path: screenshots/*.png
