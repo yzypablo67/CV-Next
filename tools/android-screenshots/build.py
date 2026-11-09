@@ -17,7 +17,20 @@ source='''import java.nio.charset.StandardCharsets;\npublic final class Screensh
 for key,obj in fixtures.items():
  encoded=base64.b64encode(json.dumps(obj,ensure_ascii=False).encode()).decode()
  source+=f' if(path.contains("{key}")) json=new String(java.util.Base64.getDecoder().decode("{encoded}"),StandardCharsets.UTF_8);\n'
-source+=' return new mg1(Integer.valueOf(200),json.getBytes(StandardCharsets.UTF_8));\n }\n}\n'
+source+=' return new mg1(Integer.valueOf(200),json.getBytes(StandardCharsets.UTF_8));\n }\n'
+source+=''' public static void seed(Object context) {
+ try {
+  Object api=Class.forName("nd").getConstructor(Class.forName("android.content.Context"),String.class).newInstance(new Object[]{context,null});
+  Object vault=api.getClass().getField("b").get(api);
+  java.lang.reflect.Method save=vault.getClass().getMethod("n",String.class,String.class);
+  save.invoke(vault,"accounts", "[{\\"key\\":\\"demo\\",\\"uid\\":\\"demo\\",\\"pass\\":\\"demo\\",\\"name\\":\\"Alex Demo\\",\\"ident\\":\\"S1234567\\"}]");
+  save.invoke(vault,"current","demo");
+  save.invoke(vault,"token|demo","screenshot-demo-token");
+  save.invoke(vault,"id|demo","1234567");
+ } catch(Exception e) {throw new RuntimeException("Unable to seed screenshot-only local account",e);}
+ }
+}\n'''
+
 (work/'ScreenshotAPI.java').write_text(source)
 (work/'mg1.java').write_text('class mg1 { public mg1(Object a,Object b){} }')
 subprocess.run(['java','--add-modules','jdk.compiler','com.sun.tools.javac.Main','-source','8','-target','8','-d',str(work),str(work/'ScreenshotAPI.java'),str(work/'mg1.java')],check=True)
@@ -27,6 +40,10 @@ subprocess.run(['bash',str(tools/'d2j-jar2dex.sh'),'-f','-o',str(work/'helper.de
 subprocess.run(['bash',str(tools/'d2j-baksmali.sh'),'-f','-o',str(work/'smali'),str(work/'helper.dex')],check=True)
 s=(work/'smali/ScreenshotAPI.smali').read_text();s=re.sub(r'(const-wide/high16 \w+, )(-?\d+)',lambda m:m[1]+hex((int(m[2])&0xffff)<<48)+'L',s);s=re.sub(r'(const/high16 \w+, )(-?\d+)',lambda m:m[1]+hex((int(m[2])&0xffff)<<16),s)
 (app/'smali/ScreenshotAPI.smali').write_text(s)
+p=app/'smali/io/github/mattcoc/cvnext/CvApp.smali'
+content=p.read_text();hook='    invoke-super {p0}, Landroid/app/Application;->onCreate()V';assert content.count(hook)==1
+p.write_text(content.replace(hook,hook+'\n    invoke-static {p0}, LScreenshotAPI;->seed(Ljava/lang/Object;)V'))
+
 p=app/'smali/nd.smali';s=p.read_text();signature='.method public static l(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmg1;';assert s.count(signature)==1;s=s.replace(signature,signature.replace(' l(',' lNetwork('));s+='''\n.method public static l(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmg1;
  .locals 1
  invoke-static {p0,p1,p2,p3}, LScreenshotAPI;->respond(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmg1;
