@@ -97,7 +97,7 @@ Lo script scarica Apktool 2.12.1 e uber-apk-signer 1.3.0 con verifica SHA-256 e 
 
 La workflow GitHub Actions compila a ogni push su `main`. I tag `v*` compilano e pubblicano la release con APK. Prima di un nuovo tag incrementare `versionCode` e `versionName` in `app/apktool.yml` e aggiornare `RELEASE_NOTES.md`.
 
-La firma automatica richiede i segreti repository `ANDROID_KEYSTORE_BASE64` e `ANDROID_SIGNING_PASSWORD`. Senza questi segreti la workflow genera solo un APK non firmato come artifact, e non pubblica release installabili. Il collegamento usato per il recupero non ha il permesso di configurare questi segreti: la prima release è firmata localmente. Non pubblicare mai chiave o password nel codice; conservarne un backup per i futuri aggiornamenti.
+La firma automatica richiede i segreti repository `ANDROID_KEYSTORE_BASE64` e `ANDROID_SIGNING_PASSWORD`. Senza questi segreti la workflow compila un APK non firmato e, solo quando versione e checksum coincidono, usa l’APK già firmato conservato in `release/` per pubblicare la versione recuperata. Per versioni future aggiornare l’APK prefirmato e i suoi metadati oppure configurare i segreti di firma. Il collegamento usato per il recupero non ha il permesso di configurare questi segreti: la prima release è firmata localmente. Non pubblicare mai chiave o password nel codice; conservarne un backup per i futuri aggiornamenti.
 
 ## Verifica e limiti
 

@@ -34,6 +34,10 @@ jobs:
         run: |
           if [ ! -f "$SIGNING_KEYSTORE" ]; then unset SIGNING_KEYSTORE; fi
           bash scripts/build.sh
+      - name: Use signed recovery APK when signing secrets are unavailable
+        run: |
+          python3 scripts/use-prebuilt.py
+          java -jar .tools/signer.jar --apks dist/CV-Next.apk --onlyVerify
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
