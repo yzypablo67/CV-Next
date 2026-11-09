@@ -6,7 +6,7 @@
 
 Client non ufficiale per ClasseViva · Android e iOS
 
-[Scarica Android](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Anteprima iOS](https://github.com/yzypablo67/CV-Next/releases/tag/ios-v0.1.0) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
+[Scarica Android](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Anteprima iOS](https://github.com/yzypablo67/CV-Next/releases/tag/ios-v0.2.0) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
 </div>
 
@@ -14,14 +14,14 @@ Client non ufficiale per ClasseViva · Android e iOS
 
 | | Android | iPhone e iPad |
 |---|---|---|
-| Versione | **1.6.15**, progetto recuperato | **0.1.0**, anteprima nativa |
+| Versione | **1.6.15**, progetto recuperato | **0.2.0**, anteprima nativa |
 | Requisiti | Android 8.0+ | iOS / iPadOS 17+ |
 | Interfaccia | Material You, colori dinamici | SwiftUI, Liquid Glass su iOS 26 |
 | Installazione | APK firmato | IPA da firmare con AltStore/Sideloadly |
 | Codice | [Branch main](https://github.com/yzypablo67/CV-Next/tree/main) | [Branch ios](https://github.com/yzypablo67/CV-Next/tree/ios) |
 | Guida | [Funzioni e build Android](docs/ANDROID.md) | [Guida iOS](ios/README.md) |
 
-> La versione iOS è all’inizio del porting: non comprende ancora tutte le funzioni Android. Un IPA non firmato non si installa direttamente da Safari o File.
+> Il porting iOS è in anteprima: i servizi reali richiedono ancora verifica e alcune funzioni restano sul web. Un IPA non firmato non si installa direttamente da Safari o File.
 
 ## Android
 
@@ -31,17 +31,17 @@ Voti e medie, giornata scolastica, compiti, circolari, documenti e notifiche in 
 
 <table>
   <tr>
-    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-phone.png"><img src="docs/screenshots/android-home-phone.png" alt="CV Next 1.6.14: Home, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-phone.png"><img src="docs/screenshots/android-day-phone.png" alt="CV Next 1.6.14: Giornata, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-phone.png"><img src="docs/screenshots/android-grades-phone.png" alt="CV Next 1.6.14: Voti, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-phone.png"><img src="docs/screenshots/android-home-phone.png" alt="CV Next 1.6.15: Home, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-phone.png"><img src="docs/screenshots/android-day-phone.png" alt="CV Next 1.6.15: Giornata, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-phone.png"><img src="docs/screenshots/android-grades-phone.png" alt="CV Next 1.6.15: Voti, layout telefono, dati demo" width="240"></a></td>
   </tr>
   <tr>
-    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-phone.png"><img src="docs/screenshots/android-notices-phone.png" alt="CV Next 1.6.14: Bacheca, layout telefono, dati demo" width="240"></a></td>
-    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-phone.png"><img src="docs/screenshots/android-functions-phone.png" alt="CV Next 1.6.14: Funzioni, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-phone.png"><img src="docs/screenshots/android-notices-phone.png" alt="CV Next 1.6.15: Bacheca, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-phone.png"><img src="docs/screenshots/android-functions-phone.png" alt="CV Next 1.6.15: Funzioni, layout telefono, dati demo" width="240"></a></td>
   </tr>
 </table>
 
-Schermate reali della UI Android **1.6.14 in formato telefono**, acquisite su emulatore con risposte API dimostrative locali. Le immagini mostrano i ritocchi implementati; nomi, voti e comunicazioni sono dati fittizi. Non sono mockup generati. Tocca una schermata per aprirla a grandezza intera.
+Schermate reali della UI Android **1.6.15 in formato telefono**, acquisite su emulatore con risposte API dimostrative locali. Le immagini mostrano i ritocchi implementati; nomi, voti e comunicazioni sono dati fittizi. Non sono mockup generati. Tocca una schermata per aprirla a grandezza intera.
 
 ### Cosa trovi nell’app
 
@@ -68,7 +68,7 @@ L’app originale e la prima ricostruzione con firma debug usano chiavi differen
 
 Il porting usa SwiftUI e i materiali nativi di Apple: **Liquid Glass su iOS 26**, superfici traslucide sulle versioni precedenti e supporto a Riduci trasparenza.
 
-Disponibili nella prima anteprima: login, scelta dello studente, Home, Voti per periodo, medie, dettaglio materia, lista Bacheca con ricerca e modalità demo. Agenda, PDF, notifiche e altre funzioni sono ancora in sviluppo.
+La versione **0.2.0** aggiunge giornata e agenda, circolari e PDF, assenze, note, materiale dei docenti, documenti, grafici, più account, copie offline, promemoria e notifiche opzionali. Il widget offre collegamenti rapidi. Giustificazioni e alcuni servizi restano sul web; il rinnovo automatico della sessione non è ancora implementato.
 
 **[Apri la guida iOS e le istruzioni di firma →](ios/README.md)**
 
