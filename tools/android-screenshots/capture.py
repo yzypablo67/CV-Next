@@ -1,5 +1,5 @@
 from pathlib import Path
-import subprocess,time,xml.etree.ElementTree as ET,re
+import subprocess,time,xml.etree.ElementTree as ET,re,base64
 out=Path('phone-screenshots');out.mkdir(exist_ok=True)
 pkg='io.github.mattcoc.cvnext'
 def adb(*args):return subprocess.check_output(['adb',*args])
@@ -55,3 +55,11 @@ finally:
   if 'FATAL EXCEPTION' in line or 'VerifyError' in line or 'ClassNotFoundException' in line: print('\n'.join(lines[max(0,i-2):i+22]))
  try:(out/'android-diagnostic-phone.png').write_bytes(adb('exec-out','screencap','-p'))
  except subprocess.CalledProcessError:pass
+
+ # Read-only transport for environments where GitHub artifact storage is blocked.
+ # Only PNGs with local demonstration data are exported; no account secrets or APK.
+ for image in sorted(out.glob('*.png')):
+  print('CVNEXT_IMAGE_BEGIN '+image.name,flush=True)
+  encoded=base64.b64encode(image.read_bytes()).decode()
+  for i in range(0,len(encoded),120):print('CVNEXT_IMAGE_DATA '+encoded[i:i+120],flush=True)
+  print('CVNEXT_IMAGE_END '+image.name,flush=True)
