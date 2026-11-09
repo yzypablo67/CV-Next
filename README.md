@@ -27,23 +27,21 @@ Client non ufficiale per ClasseViva · Android e iOS
 
 Voti e medie, giornata scolastica, compiti, circolari, documenti e notifiche in un’interfaccia adattata a telefono e tablet.
 
-### Screenshot
+### Screenshot · versione telefono
 
 <table>
   <tr>
-    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-tablet.jpg"><img src="docs/screenshots/android-home-tablet.jpg" alt="CV Next Android: Home, tablet in tema scuro" width="420"></a></td>
-    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-tablet.jpg"><img src="docs/screenshots/android-day-tablet.jpg" alt="CV Next Android: Giornata, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Home</strong><br><a href="docs/screenshots/android-home-phone.png"><img src="docs/screenshots/android-home-phone.png" alt="CV Next 1.6.14: Home, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Giornata</strong><br><a href="docs/screenshots/android-day-phone.png"><img src="docs/screenshots/android-day-phone.png" alt="CV Next 1.6.14: Giornata, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-phone.png"><img src="docs/screenshots/android-grades-phone.png" alt="CV Next 1.6.14: Voti, layout telefono, dati demo" width="240"></a></td>
   </tr>
   <tr>
-    <td align="center"><strong>Voti</strong><br><a href="docs/screenshots/android-grades-tablet.jpg"><img src="docs/screenshots/android-grades-tablet.jpg" alt="CV Next Android: Voti, tablet in tema scuro" width="420"></a></td>
-    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-tablet.jpg"><img src="docs/screenshots/android-notices-tablet.jpg" alt="CV Next Android: Bacheca, tablet in tema scuro" width="420"></a></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-tablet.jpg"><img src="docs/screenshots/android-functions-tablet.jpg" alt="CV Next Android: Funzioni, tablet in tema scuro" width="420"></a></td>
+    <td align="center"><strong>Bacheca</strong><br><a href="docs/screenshots/android-notices-phone.png"><img src="docs/screenshots/android-notices-phone.png" alt="CV Next 1.6.14: Bacheca, layout telefono, dati demo" width="240"></a></td>
+    <td align="center"><strong>Funzioni</strong><br><a href="docs/screenshots/android-functions-phone.png"><img src="docs/screenshots/android-functions-phone.png" alt="CV Next 1.6.14: Funzioni, layout telefono, dati demo" width="240"></a></td>
   </tr>
 </table>
 
-Schermate Android fornite dall’autore, in tema scuro su tablet. Tocca un’immagine per aprirla a grandezza intera. Sono riferimenti della versione precedente ai ritocchi recenti: valori e dettagli possono differire dalla release attuale.
+Schermate reali della UI Android **1.6.14 in formato telefono**, acquisite su emulatore con risposte API dimostrative locali. Le immagini mostrano i ritocchi implementati; nomi, voti e comunicazioni sono dati fittizi. Non sono mockup generati. Tocca una schermata per aprirla a grandezza intera.
 
 ### Cosa trovi nell’app
 
