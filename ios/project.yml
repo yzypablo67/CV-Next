@@ -16,6 +16,11 @@ targets:
     type: application
     platform: iOS
     sources: [App]
+    info:
+      path: Generated/Info.plist
+      properties:
+        UIBackgroundModes: [fetch]
+        BGTaskSchedulerPermittedIdentifiers: [io.github.yzypablo67.cvnext.refresh]
     dependencies:
       - package: CVNextCore
     settings:

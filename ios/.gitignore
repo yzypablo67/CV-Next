@@ -4,3 +4,4 @@ dist/
 Core/.build/
 Core/.swiftpm/
 .DS_Store
+Generated/

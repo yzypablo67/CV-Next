@@ -57,3 +57,37 @@ final class APITests: XCTestCase {
         } catch APIError.expired {} catch {XCTFail("Unexpected error: \(error)")}
     }
 }
+extension APITests {
+    func testNoticeReadUsesOriginalPostEndpoint() async throws {
+        MockProtocol.handler={request in
+            XCTAssertEqual(request.url?.path,"/rest/v1/students/123/noticeboard/read/CNT/1/101")
+            XCTAssertEqual(request.httpMethod,"POST")
+            return (200,#"{"item":{"text":"<p>Demo</p>"}}"#)
+        }
+        let notice=try JSONDecoder().decode(Notice.self,from:Data(#"{"pubId":1,"cntTitle":"Demo","evtCode":"CNT"}"#.utf8))
+        let html=try await api().noticeText(notice,for:Session(token:"fake",studentID:"123",name:"Demo"))
+        XCTAssertEqual(html,"<p>Demo</p>")
+    }
+    func testDocumentsUsePost() async throws {
+        MockProtocol.handler={request in
+            XCTAssertEqual(request.httpMethod,"POST");XCTAssertEqual(request.url?.path,"/rest/v1/students/123/documents")
+            return (200,#"{"documents":[]}"#)
+        }
+        let rows=try await api().records(.documents,for:Session(token:"fake",studentID:"123",name:"Demo"),from:Date(),to:Date())
+        XCTAssertTrue(rows.isEmpty)
+    }
+    func testResourceDoesNotSendTokenToExternalHost() async throws {
+        MockProtocol.handler={request in
+            if request.url?.host=="web.spaggiari.eu" {return (200,#"{"item":{"link":"https://files.example.test/demo.pdf"}}"#)}
+            XCTAssertNil(request.value(forHTTPHeaderField:"Z-Auth-Token"))
+            return (200,"%PDF-demo")
+        }
+        let resource=try await api().resource(path:"/didactics/item/1",for:Session(token:"fake",studentID:"123",name:"Demo"))
+        guard case .pdf=resource else{return XCTFail("Expected PDF")}
+    }
+    func testUnsafeResourceLinkRejected() async throws {
+        MockProtocol.handler={_ in (200,#"{"item":{"link":"file:///private/data"}}"#)}
+        do{_ = try await api().resource(path:"/didactics/item/1",for:Session(token:"fake",studentID:"123",name:"Demo"));XCTFail("Expected invalid response")}
+        catch APIError.invalidResponse{}catch{XCTFail("Unexpected error")}
+    }
+}

@@ -48,7 +48,7 @@ import CVNextCore
     func refresh() async {
         guard !demo,let session=account,!busy else{return};busy=true;error=nil;noticeError=nil
         let expected=generation
-        defer{busy=false}
+        defer{if generation==expected{busy=false}}
         async let gradeRequest=api.grades(for:session)
         async let noticeRequest=api.notices(for:session)
         do {
@@ -106,8 +106,7 @@ import CVNextCore
         return result
     }
     func choose(_ selected:Session){
-        guard !busy else{return}
-        do{try SessionVault.save(selected);generation=UUID();account=selected;demo=false;grades=[];notices=[];error=nil;noticeError=nil;loadCached();Task{await refresh()}}
+        do{try SessionVault.save(selected);generation=UUID();busy=false;account=selected;demo=false;grades=[];notices=[];error=nil;noticeError=nil;loadCached();Task{await refresh()}}
         catch{self.error=error.localizedDescription}
     }
     func enterDemo(){addingAccount=false;generation=UUID();demo=true;error=nil;noticeError=nil;grades=DemoData.grades;notices=DemoSchool.notices;lastUpdated=nil;showingCached=false}
@@ -118,6 +117,7 @@ import CVNextCore
             do{try SessionVault.saveAccounts(updated);accounts=updated}catch{self.error=error.localizedDescription;return}
             ReminderStore.cancelAll(account:current.studentID)
             LocalData.clear(account:current.studentID)
+            for category in ["grades","notices","agenda"]{UserDefaults.standard.removeObject(forKey:"known-\(current.studentID)-\(category)")}
         }
         SessionVault.clear();account=nil;demo=false;grades=[];notices=[];error=nil;noticeError=nil;choices=[];lastUpdated=nil;showingCached=false
     }

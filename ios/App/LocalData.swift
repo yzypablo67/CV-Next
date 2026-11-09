@@ -40,7 +40,7 @@ extension SessionVault {
         let status=SecItemUpdate(q as CFDictionary,[kSecValueData as String:data] as CFDictionary)
         if status==errSecSuccess{return}
         guard status==errSecItemNotFound else{throw VaultError.failed}
-        q[kSecValueData as String]=data;q[kSecAttrAccessible as String]=kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+        q[kSecValueData as String]=data;q[kSecAttrAccessible as String]=UserDefaults.standard.bool(forKey:"background-updates") ? kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly:kSecAttrAccessibleWhenUnlockedThisDeviceOnly
         guard SecItemAdd(q as CFDictionary,nil)==errSecSuccess else{throw VaultError.failed}
     }
 }

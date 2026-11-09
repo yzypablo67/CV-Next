@@ -5,6 +5,7 @@ import Charts
 
 @main
 struct CVNextApp: App {
+    @UIApplicationDelegateAdaptor(BackgroundDelegate.self) private var delegate
     @StateObject private var store = SchoolStore()
     @AppStorage("appearance") private var appearance = "system"
     var body: some Scene {
@@ -30,7 +31,7 @@ enum SessionVault {
         let status=SecItemUpdate(query() as CFDictionary,[kSecValueData as String:data] as CFDictionary)
         if status==errSecSuccess {return}
         guard status==errSecItemNotFound else {throw VaultError.failed}
-        var q=query();q[kSecValueData as String]=data;q[kSecAttrAccessible as String]=kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+        var q=query();q[kSecValueData as String]=data;q[kSecAttrAccessible as String]=UserDefaults.standard.bool(forKey:"background-updates") ? kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly:kSecAttrAccessibleWhenUnlockedThisDeviceOnly
         guard SecItemAdd(q as CFDictionary,nil)==errSecSuccess else {throw VaultError.failed}
     }
     static func clear(){SecItemDelete(query() as CFDictionary)}
@@ -79,6 +80,10 @@ struct RootView:View {
                 }
             }else{LoginView()}
         }.task(id:accountKey){await store.refresh()}
+        .onReceive(NotificationCenter.default.publisher(for:BackgroundUpdates.openPage).receive(on:RunLoop.main)){notification in
+            if let id=notification.userInfo?["account"] as? String,let selected=store.accounts.first(where:{$0.studentID==id}),store.account?.studentID != id{store.choose(selected)}
+            switch notification.userInfo?["page"] as? String{case "grades":selectedTab=2;case "notices":selectedTab=3;case "agenda":selectedTab=4;default:break}
+        }
         .sheet(isPresented:$store.addingAccount){LoginView()}
         .onAppear{
             #if DEBUG
@@ -102,6 +107,10 @@ struct LoginView:View {
                     Image(systemName:"graduationcap.fill").font(.system(size:44)).foregroundStyle(.cyan).accessibilityHidden(true)
                     Text("CV Next").font(.largeTitle.bold())
                     Text("Il tuo registro, con uno sguardo.").foregroundStyle(.secondary)
+                    if store.account==nil && !store.accounts.isEmpty {
+                        Text("Account salvati").font(.headline)
+                        ForEach(store.accounts,id:\.studentID){account in Button(account.name){store.choose(account)}.buttonStyle(.bordered)}
+                    }
                     VStack(spacing:16) {
                         TextField("Codice utente",text:$username).textContentType(.username).textInputAutocapitalization(.never).autocorrectionDisabled()
                         Divider()
@@ -256,6 +265,7 @@ struct SettingsView:View {
                 Button("Aggiungi account / accedi di nuovo"){store.addingAccount=true}.disabled(store.busy)
                 Button("Esci da questo account",role:.destructive){confirmLogout=true}.disabled(store.busy)
             }
+            Section("Avvisi"){NavigationLink{NotificationSettingsView()}label:{Label("Notifiche del registro",systemImage:"bell")}}
             Section("Dati"){
                 SyncStatus()
                 Button("Aggiorna registro"){Task{await store.refresh()}}.disabled(store.busy || store.demo)
@@ -264,7 +274,7 @@ struct SettingsView:View {
             Section("CV Next iOS 0.2.0"){
                 Text("Porting nativo SwiftUI con Liquid Glass su iOS 26 e materiali compatibili da iOS 17.")
                 Text("Agenda, giornata, voti e grafici, circolari, PDF, registro, account multipli e promemoria personali.")
-                Text("Giustificazioni e alcuni servizi richiedono il registro web. Le notifiche automatiche delle novità del registro e il widget richiedono ancora un’integrazione specifica iOS.").font(.footnote)
+                Text("Giustificazioni e alcuni servizi richiedono il registro web. I controlli in background seguono le regole di iOS. Il widget richiede ancora un’integrazione specifica.").font(.footnote)
                 Link("Codice e aggiornamenti",destination:URL(string:"https://github.com/yzypablo67/CV-Next/tree/ios")!)
             }
             Section{Text("Progetto non ufficiale, non affiliato a Gruppo Spaggiari. Password non salvata; sessioni nel Portachiavi.").font(.footnote)}

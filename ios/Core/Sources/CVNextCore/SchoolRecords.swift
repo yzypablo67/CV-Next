@@ -80,7 +80,7 @@ public enum RecordParser {
         switch section {
         case .agenda:
             return try records("agenda").enumerated().map { i,v in
-                SchoolRecord(id:"agenda-\(v["evtId"].text)-\(i)",title:v["subjectDesc"].text.isEmpty ? "Evento" : v["subjectDesc"].text,subtitle:v["authorName"].text,detail:v["notes"].text,date:v["evtDatetimeBegin"].text,status:v["evtCode"].text=="AGHW" ? "Compito" : "Evento")
+                SchoolRecord(id:"agenda-\(v["evtId"].text.isEmpty ? String(i) : v["evtId"].text)",title:v["subjectDesc"].text.isEmpty ? "Evento" : v["subjectDesc"].text,subtitle:v["authorName"].text,detail:v["notes"].text,date:v["evtDatetimeBegin"].text,status:v["evtCode"].text=="AGHW" ? "Compito" : "Evento")
             }.sorted{$0.date<$1.date}
         case .lessons:
             return try records("lessons").enumerated().map { i,v in
