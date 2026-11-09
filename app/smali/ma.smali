@@ -1619,7 +1619,7 @@
 
     .line 754
     .line 755
-    const-string v17, "github.com/yzypablo67/cv-next"
+    const-string v17, "github.com/yzypablo67/CV-Next"
 
     .line 756
     .line 757

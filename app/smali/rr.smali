@@ -1792,7 +1792,7 @@
 
     .line 112
     .line 113
-    const-string v0, "https://github.com/yzypablo67/cv-next/issues/new?title="
+    const-string v0, "https://github.com/yzypablo67/CV-Next/issues/new?title="
 
     .line 114
     .line 115

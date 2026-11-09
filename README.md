@@ -2,7 +2,7 @@
 
 App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack Compose.
 
-[**Scarica l’ultimo APK**](https://github.com/yzypablo67/cv-next/releases/latest/download/CV-Next.apk) · [Release](https://github.com/yzypablo67/cv-next/releases) · [Segnala un problema](https://github.com/yzypablo67/cv-next/issues)
+[**Scarica l’ultimo APK**](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Release](https://github.com/yzypablo67/CV-Next/releases) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
 Android 8.0 o successivo (API 26). Versione recuperata: **1.6.12**.
 
@@ -79,7 +79,7 @@ L’elenco seguente riporta le funzioni descritte nel README originale indicizza
 
 ### Aggiornamenti
 
-La sezione aggiornamenti interroga `https://api.github.com/repos/yzypablo67/cv-next/releases/latest`, legge il tag, le note e l’asset `.apk`, quindi usa il relativo `browser_download_url`. Le nuove release devono avere un tag `vX.Y.Z` coerente con la versione dell’app e includere `CV-Next.apk`.
+La sezione aggiornamenti interroga `https://api.github.com/repos/yzypablo67/CV-Next/releases/latest`, legge il tag, le note e l’asset `.apk`, quindi usa il relativo `browser_download_url`. Le nuove release devono avere un tag `vX.Y.Z` coerente con la versione dell’app e includere `CV-Next.apk`.
 
 ## Installazione e firma
 
@@ -97,7 +97,7 @@ Lo script scarica Apktool 2.12.1 e uber-apk-signer 1.3.0 con verifica SHA-256 e 
 
 La workflow GitHub Actions compila a ogni push su `main`. I tag `v*` compilano e pubblicano la release con APK. Prima di un nuovo tag incrementare `versionCode` e `versionName` in `app/apktool.yml` e aggiornare `RELEASE_NOTES.md`.
 
-I segreti repository `ANDROID_KEYSTORE_BASE64` e `ANDROID_SIGNING_PASSWORD` contengono la firma. Non pubblicare mai chiave o password nel codice; conservarne un backup per i futuri aggiornamenti.
+La firma automatica richiede i segreti repository `ANDROID_KEYSTORE_BASE64` e `ANDROID_SIGNING_PASSWORD`. Senza questi segreti la workflow genera solo un APK non firmato come artifact, e non pubblica release installabili. Il collegamento usato per il recupero non ha il permesso di configurare questi segreti: la prima release è firmata localmente. Non pubblicare mai chiave o password nel codice; conservarne un backup per i futuri aggiornamenti.
 
 ## Verifica e limiti
 

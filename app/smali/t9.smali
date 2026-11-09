@@ -249,7 +249,7 @@
 
     .line 10
     .line 11
-    const-string p1, "https://api.github.com/repos/yzypablo67/cv-next/releases/latest"
+    const-string p1, "https://api.github.com/repos/yzypablo67/CV-Next/releases/latest"
 
     .line 12
     .line 13

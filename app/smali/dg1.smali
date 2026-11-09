@@ -80,7 +80,7 @@
 
     .line 21
     :pswitch_0
-    const-string v0, "https://github.com/yzypablo67/cv-next"
+    const-string v0, "https://github.com/yzypablo67/CV-Next"
 
     .line 22
     .line 23
@@ -93,7 +93,7 @@
 
     .line 27
     :pswitch_1
-    const-string v0, "https://github.com/yzypablo67/cv-next/releases"
+    const-string v0, "https://github.com/yzypablo67/CV-Next/releases"
 
     .line 28
     .line 29
