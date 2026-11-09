@@ -34,6 +34,7 @@ try:
  adb('shell','am','force-stop','com.android.launcher3');time.sleep(2)
  for _ in range(10):
   if click('Close app') or click('Chiudi app'):continue
+  if click('Non ora'):continue
   if click('Salta'):continue
   if click('Non consentire') or click("Don't allow"):continue
   tree=dump();fields=[n for n in tree.iter('node') if n.get('class')=='android.widget.EditText']
