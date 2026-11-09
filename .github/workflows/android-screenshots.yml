@@ -29,7 +29,8 @@ jobs:
       - name: Capture updated phone UI with demo API
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
+          target: default
           arch: x86_64
           profile: pixel_7
           disable-animations: true

@@ -31,12 +31,16 @@ def shot(name):
  (out/f'{name}.xml').write_bytes(adb('shell','cat','/sdcard/window.xml'))
 try:
  adb('shell','am','start','-W','-n',pkg+'/.MainActivity');time.sleep(12)
+ adb('shell','am','force-stop','com.android.launcher3');time.sleep(2)
  for _ in range(10):
+  if click('Close app') or click('Chiudi app'):continue
   if click('Salta'):continue
   if click('Non consentire') or click("Don't allow"):continue
   tree=dump();fields=[n for n in tree.iter('node') if n.get('class')=='android.widget.EditText']
   if len(fields)>=2:
-   for node in fields[:2]:tap(node);adb('shell','input','text','demo')
+   for index in range(2):
+    fields=[n for n in dump().iter('node') if n.get('class')=='android.widget.EditText']
+    tap(fields[index]);adb('shell','input','text','demo')
    adb('shell','input','keyevent','4');time.sleep(1)
    if not click('Accedi'):raise RuntimeError('Login button missing')
    time.sleep(8);continue
@@ -48,6 +52,7 @@ try:
   if not click(text):raise RuntimeError('Navigation item missing: '+text)
   shot(name)
 finally:
+ if (out/'latest.xml').exists():print('CVNEXT_UI_XML '+(out/'latest.xml').read_text(),flush=True)
  log=adb('logcat','-d','-t','1500')
  (out/'logcat.txt').write_bytes(log)
  lines=log.decode(errors='replace').splitlines()
