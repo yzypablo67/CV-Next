@@ -17,7 +17,7 @@ public enum APIError: LocalizedError {
 public enum LoginResult { case authenticated(Session), choose([StudentChoice]) }
 public struct ClasseVivaAPI {
     private let session: URLSession
-    public init(session: URLSession = .shared) { self.session = session }
+    public init(session: URLSession = URLSession(configuration: .ephemeral)) { self.session = session }
     private func request(_ path: String, token: String? = nil, body: [String: Any]? = nil) async throws -> Data {
         guard let url = URL(string: "https://web.spaggiari.eu/rest/v1" + path) else { throw APIError.invalidResponse }
         var request = URLRequest(url: url, timeoutInterval: 30)
