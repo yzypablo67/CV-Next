@@ -74,7 +74,7 @@ public class AverageTest {
         check("only excluded",Arrays.asList(g("Math",1.,false),g("English",null,true)),null);
         check("subject rename has no effect",Arrays.asList(g("A",6.,true),g("B",6.,true),g("C",9.,true)),7.);
         String summary=UiPolish.summary(Arrays.asList(g("Math",6.,true),g("Math",6.,true),g("English",9.,true),g("Other",10.,false)));
-        if(!summary.equals("3 voti validi · 1 escluso · 2 materie con voti validi\\nSufficiente")) throw new AssertionError(summary);
+        if(!summary.equals("3 voti validi · 1 escluso\\nSufficiente")) throw new AssertionError(summary);
         if(!UiPolish.summary(Collections.emptyList()).contains("Nessun voto valido"))throw new AssertionError("empty UI state");
         if(!UiPolish.summary(Arrays.asList(g("Math",5.,true))).endsWith("Sotto il 6"))throw new AssertionError("insufficient UI state");
         if(!UiPolish.noticeMeta("9 nov",false).equals("Non letta · 9 nov"))throw new AssertionError("unread metadata");

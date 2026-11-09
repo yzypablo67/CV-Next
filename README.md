@@ -14,7 +14,7 @@ Client non ufficiale per ClasseViva · Android e iOS
 
 | | Android | iPhone e iPad |
 |---|---|---|
-| Versione | **1.6.14**, progetto recuperato | **0.1.0**, anteprima nativa |
+| Versione | **1.6.15**, progetto recuperato | **0.1.0**, anteprima nativa |
 | Requisiti | Android 8.0+ | iOS / iPadOS 17+ |
 | Interfaccia | Material You, colori dinamici | SwiftUI, Liquid Glass su iOS 26 |
 | Installazione | APK firmato | IPA da firmare con AltStore/Sideloadly |
@@ -93,3 +93,7 @@ Build e test automatici sono disponibili su GitHub Actions. Questo non sostituis
 Progetto originale `mattcoc/cv-next`, recupero e sviluppo su `yzypablo67/CV-Next`.
 
 CV Next è un progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spaggiari Parma S.p.A. ClasseViva e gli altri marchi appartengono ai rispettivi titolari. Le dipendenze conservano le rispettive licenze; non viene attribuita una nuova licenza al codice recuperato.
+
+## Possibile nucleo Rust
+
+[Valutazione e percorso di migrazione](docs/RUST.md): logica condivisa, interfacce native SwiftUI e Compose.

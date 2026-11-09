@@ -1,12 +1,8 @@
-## CV Next 1.6.14
+## CV Next 1.6.15
 
-- Stile originale mantenuto: navigazione, colori Material You e schede esistenti.
-- Scheda della media con colori semantici del tema attivo, senza sfondo rosso pieno; lo stato viene indicato anche dal testo e dall’anello.
-- Conteggio distinto dei voti validi e degli esclusi, e delle materie che hanno voti validi.
-- Dicitura esplicita “Media dei voti validi” e stato “Sufficiente”, “Sotto il 6” o nessun voto valido.
-- Etichetta “Non letta” nelle informazioni delle comunicazioni, oltre al pallino colorato.
-- Riepilogo voti con spaziatura interna più ampia.
-- Le modifiche usano il tema corrente anche in modalità chiara, scura e con colori dinamici.
-- Stessa firma della 1.6.12 e della 1.6.13.
+- Riepilogo Voti più compatto su telefono: numero principale, anello e spaziatura ridotti.
+- Conteggio validi/esclusi più breve, senza ripetere il numero di materie già presente nel riepilogo.
+- Colori semantici del tema mantenuti: chiaro, scuro e palette dinamiche.
+- Media aritmetica e filtro dei voti esclusi invariati, coperti dai test.
 
-Test automatici del calcolo e degli helper UI. Non verificato visivamente su dispositivo Android; le anteprime grafiche sono indicative e non screenshot dell’APK.
+Stessa chiave di firma delle versioni 1.6.12–1.6.14. Aggiornabile senza disinstallare.

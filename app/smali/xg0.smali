@@ -221,7 +221,7 @@
     move-result-object v10
 
     .line 65
-    const/high16 v11, 0x41c00000    # 24.0f
+    const/high16 v11, 0x41900000    # 18.0f
 
     .line 66
     .line 67
@@ -832,7 +832,7 @@
 
     .line 370
     .line 371
-    iget-object v13, v13, Luh2;->b:Lde2;
+    iget-object v13, v13, Luh2;->d:Lde2;
 
     .line 372
     .line 373
@@ -1035,7 +1035,7 @@
 
     .line 506
     .line 507
-    const/high16 v12, 0x42900000    # 72.0f
+    const/high16 v12, 0x42400000    # 48.0f
 
     .line 508
     .line 509
