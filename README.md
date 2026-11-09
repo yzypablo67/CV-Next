@@ -6,7 +6,7 @@
 
 Client non ufficiale per ClasseViva · Android e iOS
 
-[Scarica Android](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Anteprima iOS](https://github.com/yzypablo67/CV-Next/releases/tag/ios-v0.1.0) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
+[Scarica Android](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Anteprima iOS](https://github.com/yzypablo67/CV-Next/releases/tag/ios-v0.2.0) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
 </div>
 
@@ -14,14 +14,14 @@ Client non ufficiale per ClasseViva · Android e iOS
 
 | | Android | iPhone e iPad |
 |---|---|---|
-| Versione | **1.6.14**, progetto recuperato | **0.1.0**, anteprima nativa |
+| Versione | **1.6.15**, progetto recuperato | **0.2.0**, anteprima nativa |
 | Requisiti | Android 8.0+ | iOS / iPadOS 17+ |
 | Interfaccia | Material You, colori dinamici | SwiftUI, Liquid Glass su iOS 26 |
 | Installazione | APK firmato | IPA da firmare con AltStore/Sideloadly |
 | Codice | [Branch main](https://github.com/yzypablo67/CV-Next/tree/main) | [Branch ios](https://github.com/yzypablo67/CV-Next/tree/ios) |
 | Guida | [Funzioni e build Android](docs/ANDROID.md) | [Guida iOS](ios/README.md) |
 
-> La versione iOS è all’inizio del porting: non comprende ancora tutte le funzioni Android. Un IPA non firmato non si installa direttamente da Safari o File.
+> Il porting iOS è in anteprima: i servizi reali richiedono ancora verifica e alcune funzioni restano sul web. Un IPA non firmato non si installa direttamente da Safari o File.
 
 ## Android
 
@@ -68,7 +68,7 @@ L’app originale e la prima ricostruzione con firma debug usano chiavi differen
 
 Il porting usa SwiftUI e i materiali nativi di Apple: **Liquid Glass su iOS 26**, superfici traslucide sulle versioni precedenti e supporto a Riduci trasparenza.
 
-Disponibili nella prima anteprima: login, scelta dello studente, Home, Voti per periodo, medie, dettaglio materia, lista Bacheca con ricerca e modalità demo. Agenda, PDF, notifiche e altre funzioni sono ancora in sviluppo.
+La versione **0.2.0** aggiunge giornata e agenda, circolari e PDF, assenze, note, materiale dei docenti, documenti, grafici, più account, copie offline, promemoria e notifiche opzionali. Il widget offre collegamenti rapidi. Giustificazioni e alcuni servizi restano sul web; il rinnovo automatico della sessione non è ancora implementato.
 
 **[Apri la guida iOS e le istruzioni di firma →](ios/README.md)**
 
