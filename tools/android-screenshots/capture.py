@@ -4,10 +4,16 @@ out=Path('phone-screenshots');out.mkdir(exist_ok=True)
 pkg='io.github.mattcoc.cvnext'
 def adb(*args):return subprocess.check_output(['adb',*args])
 def dump():
- adb('shell','uiautomator','dump','/sdcard/window.xml')
- data=adb('shell','cat','/sdcard/window.xml')
- (out/'latest.xml').write_bytes(data)
- return ET.fromstring(data)
+ for attempt in range(8):
+  try:
+   adb('shell','uiautomator','dump','/sdcard/window.xml')
+   data=adb('shell','cat','/sdcard/window.xml')
+   tree=ET.fromstring(data)
+   (out/'latest.xml').write_bytes(data)
+   return tree
+  except (subprocess.CalledProcessError,ET.ParseError):
+   time.sleep(3)
+ raise RuntimeError('UI hierarchy unavailable after retries')
 def tap(node):
  a,b,c,d=map(int,re.findall(r'\d+',node.get('bounds','')))
  adb('shell','input','tap',str((a+c)//2),str((b+d)//2));time.sleep(1)
@@ -24,7 +30,7 @@ def shot(name):
  (out/f'android-{name}-phone.png').write_bytes(adb('exec-out','screencap','-p'))
  (out/f'{name}.xml').write_bytes(adb('shell','cat','/sdcard/window.xml'))
 try:
- adb('shell','am','start','-n',pkg+'/.MainActivity');time.sleep(5)
+ adb('shell','am','start','-W','-n',pkg+'/.MainActivity');time.sleep(12)
  for _ in range(10):
   if click('Salta'):continue
   if click('Non consentire') or click("Don't allow"):continue
@@ -42,4 +48,10 @@ try:
   if not click(text):raise RuntimeError('Navigation item missing: '+text)
   shot(name)
 finally:
- (out/'logcat.txt').write_bytes(adb('logcat','-d','-t','1500'))
+ log=adb('logcat','-d','-t','1500')
+ (out/'logcat.txt').write_bytes(log)
+ lines=log.decode(errors='replace').splitlines()
+ for i,line in enumerate(lines):
+  if 'FATAL EXCEPTION' in line or 'VerifyError' in line or 'ClassNotFoundException' in line: print('\n'.join(lines[max(0,i-2):i+22]))
+ try:(out/'android-diagnostic-phone.png').write_bytes(adb('exec-out','screencap','-p'))
+ except subprocess.CalledProcessError:pass

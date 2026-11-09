@@ -38,7 +38,7 @@ jobs:
             adb shell wm size 1080x2400
             adb shell wm density 420
             adb shell cmd uimode night yes
-            adb install .tools/phone-screenshots/signed/demo-aligned-debugSigned.apk
+            adb install --no-incremental .tools/phone-screenshots/signed/demo-aligned-debugSigned.apk
             python3 tools/android-screenshots/capture.py
       - uses: actions/upload-artifact@v4
         if: always()
