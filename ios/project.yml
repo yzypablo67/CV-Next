@@ -19,6 +19,8 @@ targets:
     info:
       path: Generated/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UIBackgroundModes: [fetch]
         BGTaskSchedulerPermittedIdentifiers: [io.github.yzypablo67.cvnext.refresh]
         CFBundleURLTypes:
@@ -47,6 +49,8 @@ targets:
     info:
       path: Generated/Widget-Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleDisplayName: CV Next
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension

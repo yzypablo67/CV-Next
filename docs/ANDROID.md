@@ -4,7 +4,7 @@ App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack
 
 [**Scarica l’ultimo APK**](https://github.com/yzypablo67/CV-Next/releases/latest/download/CV-Next.apk) · [Release](https://github.com/yzypablo67/CV-Next/releases) · [Segnala un problema](https://github.com/yzypablo67/CV-Next/issues)
 
-Android 8.0 o successivo (API 26). Versione recuperata: **1.6.14**.
+Android 8.0 o successivo (API 26). Versione corrente: **1.6.15**.
 
 ## Screenshot · versione telefono
 

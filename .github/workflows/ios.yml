@@ -30,6 +30,20 @@ jobs:
       - name: Build device app
         run: |
           xcodebuild -project ios/CVNext.xcodeproj -scheme CVNext -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build
+      - name: Verify app and widget versions
+        run: |
+          python3 - <<'PY'
+          import pathlib, plistlib
+          app=pathlib.Path("ios/build/Build/Products/Release-iphoneos/CVNext.app")
+          main=plistlib.loads((app/"Info.plist").read_bytes())
+          extensions=list((app/"PlugIns").glob("*.appex"))
+          assert extensions, "Widget extension missing"
+          for extension in extensions:
+              info=plistlib.loads((extension/"Info.plist").read_bytes())
+              for key in ["CFBundleShortVersionString", "CFBundleVersion"]:
+                  assert info[key]==main[key], (extension.name,key,info[key],main[key])
+          print("App and widget versions match:", main["CFBundleShortVersionString"], main["CFBundleVersion"])
+          PY
       - name: Package unsigned IPA
         run: |
           mkdir -p ios/dist/Payload
