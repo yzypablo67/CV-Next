@@ -88,4 +88,4 @@ Le richieste del registro vanno direttamente ai server Spaggiari. Le password no
 
 Non ci sono server dello sviluppatore o statistiche di utilizzo. L’integrazione non è ufficialmente supportata da Spaggiari e gli endpoint possono cambiare.
 
-[Architettura Rust possibile](../docs/RUST.md) · [Torna alla panoramica](../README.md)
+[Torna alla panoramica](../README.md)

@@ -72,12 +72,6 @@ La versione **0.2.0** aggiunge giornata e agenda, circolari e PDF, assenze, note
 
 **[Apri la guida iOS e le istruzioni di firma →](ios/README.md)**
 
-## Riscrittura Rust sperimentale
-
-È avviata una nuova versione con logica e UI in **Rust/Dioxus**, disponibile nel [branch `rust`](https://github.com/yzypablo67/CV-Next/tree/rust). Include le cinque sezioni, temi chiaro/scuro, client API, calcoli e demo; non ha ancora tutte le funzioni dell’app attuale.
-
-[APK Rust e app Windows](https://github.com/yzypablo67/CV-Next/releases/tag/rust-v0.1.0) · [Screenshot, limiti e istruzioni Android Studio su Windows](https://github.com/yzypablo67/CV-Next/blob/rust/rust/README.md) · [Architettura](docs/RUST.md)
-
 ## Compilazioni e download
 
 - **Android:** [workflow Build Android APK](https://github.com/yzypablo67/CV-Next/actions/workflows/release.yml). I tag `v*` pubblicano l’APK nelle release.
@@ -100,6 +94,3 @@ Progetto originale `mattcoc/cv-next`, recupero e sviluppo su `yzypablo67/CV-Next
 
 CV Next è un progetto non ufficiale, non affiliato, sponsorizzato o approvato da Gruppo Spaggiari Parma S.p.A. ClasseViva e gli altri marchi appartengono ai rispettivi titolari. Le dipendenze conservano le rispettive licenze; non viene attribuita una nuova licenza al codice recuperato.
 
-## Possibile nucleo Rust
-
-[Valutazione e percorso di migrazione](docs/RUST.md): logica condivisa, interfacce native SwiftUI e Compose.
