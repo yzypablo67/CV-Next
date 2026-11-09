@@ -1,3 +1,18 @@
+# CV Next iOS — branch di sviluppo
+
+Questo branch contiene il porting nativo SwiftUI per iPhone e iPad. Il progetto è nella cartella [`ios/`](ios/README.md).
+
+- Compilazione macOS: workflow **Build iOS IPA**, eseguita anche sui push a questo branch.
+- Download build: aprire la relativa esecuzione in GitHub Actions e scaricare l’artifact **CV-Next-iOS-unsigned**; lo ZIP contiene l’IPA.
+- L’IPA richiede firma tramite AltStore/Sideloadly. Non è firmato da Apple.
+- Liquid Glass su iOS 26, materiali traslucidi sulle versioni precedenti; iOS 17 minimo.
+- Prima anteprima: login, scelta studente, Home, Voti, lista Bacheca, demo e temi chiaro/scuro.
+- [Istruzioni iOS e limiti attuali](ios/README.md).
+
+Il materiale Android recuperato è conservato nella storia e nelle cartelle esistenti. La versione Android stabile resta sul branch `main`.
+
+---
+
 # CV Next
 
 App Android non ufficiale per ClasseViva, con interfaccia Material You e Jetpack Compose.
