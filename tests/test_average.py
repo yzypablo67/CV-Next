@@ -1,6 +1,6 @@
-"""Run the app's actual Smali average methods on a JVM via dex2jar.
+"""Run the app's Smali grade and UI methods on a JVM via dex2jar.
 
-Only the Grade data object and the unreachable count-overflow helper are stubs.
+Stubs provide the model fields and runtime dependencies used by these methods.
 No production calculation is reimplemented by this test.
 Requires Java 21 with jdk.compiler, Apktool and dex-tools 2.4.
 """
@@ -21,6 +21,9 @@ with tempfile.TemporaryDirectory() as tmp:
     fy = (ROOT / 'app/smali/fy.smali').read_text()
     bo = (ROOT / 'app/smali/bo.smali').read_text()
     (smali / 'fy.smali').write_text('.class public abstract Lfy;\n.super Ljava/lang/Object;\n' + method(fy, 'public static final G(Ljava/util/List;)Ljava/lang/Double;') + '\n' + method(fy, 'public static final k(Ljava/util/List;)Ljava/lang/Double;'))
+    er = (ROOT / 'app/smali/er.smali').read_text()
+    period_method = method(er, 'public static final defaultGradePeriod(Ljava/util/List;Ljava/util/List;)I')
+    (smali / 'er.smali').write_text('.class public abstract Ler;\n.super Ljava/lang/Object;\n' + period_method)
     (smali / 'bo.smali').write_text('.class public abstract Lbo;\n.super Ljava/lang/Object;\n' + method(bo, 'public static g0(Ljava/util/ArrayList;)D'))
     (work/'Assemble.java').write_text("""
 import java.io.File;
@@ -47,7 +50,13 @@ class vg0 {
     public String a;
     public Double d;
     public boolean i;
+    public int h;
+    vg0(int period) {h=period;}
     vg0(String subject, Double value, boolean counts) {a=subject;d=value;i=counts;}
+}
+class nj1 {
+    public int a;
+    nj1(int period) {a=period;}
 }
 class co {public static void W(){throw new ArithmeticException("Count overflow");}}
 class fo1 {}
@@ -65,7 +74,18 @@ public class AverageTest {
             throw new AssertionError(name+": expected "+expected+", got "+actual);
         System.out.println("PASS "+name);
     }
+    static void checkPeriod(List<nj1> periods, List<vg0> grades, int expected) {
+        int actual = er.defaultGradePeriod(periods, grades);
+        if (actual != expected) throw new AssertionError("period: expected " + expected + ", got " + actual);
+    }
     public static void main(String[] args){
+        List<nj1> periods = List.of(new nj1(1), new nj1(3));
+        checkPeriod(periods, List.of(), 1);
+        checkPeriod(periods, List.of(new vg0(1)), 1);
+        checkPeriod(periods, List.of(new vg0(1), new vg0(3)), 3);
+        checkPeriod(periods, List.of(new vg0(3)), 3);
+        checkPeriod(List.of(), List.of(), -1);
+        System.out.println("PASS default period advances on the first new grade");
         check("different counts per subject", Arrays.asList(g("Math",6.,true),g("Math",6.,true),g("English",9.,true)),7.);
         check("excluded and null grades",Arrays.asList(g("Math",6.,true),g("Math",0.,false),g("English",10.,false),g("English",null,true),g("English",8.,true)),7.);
         check("decimal precision",Arrays.asList(g("Math",6.25,true),g("English",7.75,true)),7.);

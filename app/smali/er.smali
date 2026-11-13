@@ -5927,219 +5927,19 @@
 
     .line 227
     .line 228
-    invoke-interface {v1}, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;
+    invoke-static {v1, v6}, Ler;->defaultGradePeriod(Ljava/util/List;Ljava/util/List;)I
 
-    .line 229
-    .line 230
-    .line 231
-    move-result-object v0
-
-    .line 232
-    :cond_c
-    invoke-interface {v0}, Ljava/util/Iterator;->hasNext()Z
-
-    .line 233
-    .line 234
-    .line 235
     move-result v3
 
-    .line 236
-    const/4 v4, 0x0
+    # Keep manual filters until the automatic default changes after a sync.
+    invoke-static {v3}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
 
-    .line 237
-    if-eqz v3, :cond_d
-
-    .line 238
-    .line 239
-    invoke-interface {v0}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    .line 240
-    .line 241
-    .line 242
-    move-result-object v3
-
-    .line 243
-    move-object v5, v3
-
-    .line 244
-    check-cast v5, Lnj1;
-
-    .line 245
-    .line 246
-    invoke-virtual {v5}, Lnj1;->a()Z
-
-    .line 247
-    .line 248
-    .line 249
-    move-result v5
-
-    .line 250
-    if-eqz v5, :cond_c
-
-    .line 251
-    .line 252
-    goto :goto_7
-
-    .line 253
-    :cond_d
-    move-object v3, v4
-
-    .line 254
-    :goto_7
-    check-cast v3, Lnj1;
-
-    .line 255
-    .line 256
-    if-eqz v3, :cond_e
-
-    .line 257
-    .line 258
-    iget v3, v3, Lnj1;->a:I
-
-    .line 259
-    .line 260
-    goto :goto_a
-
-    .line 261
-    :cond_e
-    invoke-interface {v1}, Ljava/util/List;->size()I
-
-    .line 262
-    .line 263
-    .line 264
-    move-result v3
-
-    .line 265
-    invoke-interface {v1, v3}, Ljava/util/List;->listIterator(I)Ljava/util/ListIterator;
-
-    .line 266
-    .line 267
-    .line 268
-    move-result-object v3
-
-    .line 269
-    :cond_f
-    :goto_8
-    invoke-interface {v3}, Ljava/util/ListIterator;->hasPrevious()Z
-
-    .line 270
-    .line 271
-    .line 272
-    move-result v5
-
-    .line 273
-    if-eqz v5, :cond_12
-
-    .line 274
-    .line 275
-    invoke-interface {v3}, Ljava/util/ListIterator;->previous()Ljava/lang/Object;
-
-    .line 276
-    .line 277
-    .line 278
     move-result-object v5
 
-    .line 279
-    move-object v7, v5
+    filled-new-array {v5}, [Ljava/lang/Object;
 
-    .line 280
-    check-cast v7, Lnj1;
+    move-result-object v5
 
-    .line 281
-    .line 282
-    invoke-interface {v6}, Ljava/util/Collection;->isEmpty()Z
-
-    .line 283
-    .line 284
-    .line 285
-    move-result v8
-
-    .line 286
-    if-eqz v8, :cond_10
-
-    .line 287
-    .line 288
-    goto :goto_8
-
-    .line 289
-    :cond_10
-    invoke-interface {v6}, Ljava/lang/Iterable;->iterator()Ljava/util/Iterator;
-
-    .line 290
-    .line 291
-    .line 292
-    move-result-object v8
-
-    .line 293
-    :cond_11
-    invoke-interface {v8}, Ljava/util/Iterator;->hasNext()Z
-
-    .line 294
-    .line 295
-    .line 296
-    move-result v9
-
-    .line 297
-    if-eqz v9, :cond_f
-
-    .line 298
-    .line 299
-    invoke-interface {v8}, Ljava/util/Iterator;->next()Ljava/lang/Object;
-
-    .line 300
-    .line 301
-    .line 302
-    move-result-object v9
-
-    .line 303
-    check-cast v9, Lvg0;
-
-    .line 304
-    .line 305
-    iget v9, v9, Lvg0;->h:I
-
-    .line 306
-    .line 307
-    iget v10, v7, Lnj1;->a:I
-
-    .line 308
-    .line 309
-    if-ne v9, v10, :cond_11
-
-    .line 310
-    .line 311
-    goto :goto_9
-
-    .line 312
-    :cond_12
-    move-object v5, v4
-
-    .line 313
-    :goto_9
-    check-cast v5, Lnj1;
-
-    .line 314
-    .line 315
-    if-eqz v5, :cond_13
-
-    .line 316
-    .line 317
-    iget v3, v5, Lnj1;->a:I
-
-    .line 318
-    .line 319
-    goto :goto_a
-
-    .line 320
-    :cond_13
-    const/4 v3, -0x1
-
-    .line 321
-    :goto_a
-    new-array v5, v15, [Ljava/lang/Object;
-
-    .line 322
-    .line 323
     invoke-virtual {v12, v3}, Ldg0;->d(I)Z
 
     .line 324
@@ -6955,6 +6755,81 @@
     .line 5
     .line 6
     return-void
+.end method
+
+.method public static final defaultGradePeriod(Ljava/util/List;Ljava/util/List;)I
+    .locals 5
+
+    # The API list is already sorted by periodPos. IDs can have gaps.
+    invoke-interface {p0}, Ljava/util/List;->size()I
+
+    move-result v0
+
+    invoke-interface {p0, v0}, Ljava/util/List;->listIterator(I)Ljava/util/ListIterator;
+
+    move-result-object v0
+
+    :next_period
+    invoke-interface {v0}, Ljava/util/ListIterator;->hasPrevious()Z
+
+    move-result v1
+
+    if-eqz v1, :no_grades
+
+    invoke-interface {v0}, Ljava/util/ListIterator;->previous()Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lnj1;
+
+    iget v1, v1, Lnj1;->a:I
+
+    invoke-interface {p1}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+
+    move-result-object v2
+
+    :next_grade
+    invoke-interface {v2}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v3
+
+    if-eqz v3, :next_period
+
+    invoke-interface {v2}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lvg0;
+
+    iget v4, v3, Lvg0;->h:I
+
+    if-ne v4, v1, :next_grade
+
+    return v1
+
+    :no_grades
+    invoke-interface {p0}, Ljava/util/List;->isEmpty()Z
+
+    move-result v0
+
+    if-eqz v0, :first_period
+
+    const/4 v0, -0x1
+
+    return v0
+
+    :first_period
+    const/4 v0, 0x0
+
+    invoke-interface {p0, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lnj1;
+
+    iget v0, v0, Lnj1;->a:I
+
+    return v0
 .end method
 
 .method public static final c(ILjava/util/List;)Ljava/lang/String;
